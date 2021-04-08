@@ -9,5 +9,5 @@ def index(request):
 class AllProducts(generic.ListView):
     model = Product
     template_name = 'shop/views/products.html'
-    paginate_by = 2
+    paginate_by = 10
     ordering = ['-created_date']

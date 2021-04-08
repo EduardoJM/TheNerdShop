@@ -4,3 +4,39 @@
     align-items: center;
     justify-content: center;
 }
+
+.products-row {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: flex-start;
+}
+
+.product-item {
+    margin-left: 0 !important;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.product-item h6 {
+    font-weight: normal;
+    text-align: center;
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+}
+
+.product-item .price-old {
+    text-align: center;
+    font-weight: lighter;
+    text-decoration: line-through;
+    font-size: 1.4rem;
+    opacity: 0.6;
+    margin: 0;
+}
+.product-item .price-new {
+    text-align: center;
+    font-weight: lighter;
+    font-size: 1.6rem;
+    margin: 0;
+}
