@@ -1,0 +1,5 @@
+icons/tags/*
+!icons/tags/.gitkeep
+
+products/*
+!products/.gitkeep
