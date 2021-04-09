@@ -3,7 +3,7 @@ from django.urls import path
 from django.template.response import TemplateResponse
 
 class ShopAdminSite(AdminSite):
-    site_header = 'Administração TheNerdShop'
+    site_header = 'TheNerdShop'
     enable_nav_sidebar = True
 
     def get_urls(self):

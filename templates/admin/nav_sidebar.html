@@ -1,0 +1,50 @@
+{% load i18n %}
+<ul id="admin-sidebar" class="sidenav sidenav-fixed">
+    {% block nav-sidebar-profile %}
+        <li><div class="user-view">
+            <div class="background purple darken-4">
+                <!--<img src="images/office.jpg">-->
+            </div>
+            <!--<a href="#user"><img class="circle" src="images/yuna.jpg"></a>-->
+            <a><span class="white-text name">{{ user.first_name }} {{ user.last_name }}</span></a>
+            <a><span class="white-text email">{{ user.email }}</span></a>
+        </div></li>
+    {% endblock %}
+    {% block nav-sidebar-items %}
+        {% with app_list=available_apps %}
+            {% for app in app_list %}
+                <li class="no-padding">
+                    <ul class="collapsible collapsible-accordion">
+                        <li>
+                            <a class="collapsible-header">{{ app.name }}<i class="material-icons">arrow_drop_down</i></a>
+                            <div class="collapsible-body">
+                                <ul>
+                                    {% for model in app.models %}
+                                        <li>
+                                            {% if model.admin_url %}
+                                                <a href="{{ model.admin_url }}">
+                                                    {{ model.name }}
+                                                </a>
+                                            {% else %}
+                                                <a href="#">
+                                                    {{ model.name }}
+                                                </a>
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            {% endfor %}
+        {% endwith %}
+    {% endblock %}
+</ul>
+
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+    M.Sidenav.init(document.getElementById('admin-sidebar'), {});
+    M.Collapsible.init(document.querySelectorAll('.collapsible'), {});
+});
+</script>
