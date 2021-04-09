@@ -39,6 +39,20 @@
                                 {{ item.text }}
                             </span>
                         </a>
+                        {% if item.children|length > 0 %}
+                            <ul class="dropdown purple darken-4">
+                                {% for child in item.children %}
+                                    <li class="dropdown-item">
+                                        <a href="{% url 'shop:category' child.id %}">
+                                            <img src="{% get_media_prefix %}{{ child.icon }}" class="icon" />
+                                            <span class="title">
+                                                {{ child.text }}
+                                            </span>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
                     </li>
                 {% endfor %}
             </ul>

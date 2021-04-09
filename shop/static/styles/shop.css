@@ -53,10 +53,14 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    position: relative;
 }
 #category-top-menu ul li {
     width: 128px;
     height: 128px;
+}
+#category-top-menu ul li:hover {
+    background: rgba(255, 255, 255, 0.1);
 }
 
 #category-top-menu ul li a {
@@ -67,9 +71,6 @@
     align-items: center;
     justify-content: center;
 }
-#category-top-menu ul li a:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
 
 #category-top-menu ul li img {
     width: 70%;
@@ -79,4 +80,16 @@
 #category-top-menu ul li span {
     font-weight: bold;
     color: #FFF;
+}
+
+#category-top-menu ul li .dropdown {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    top: 100%;
+    z-index: 5000;
+    display: none;
+}
+#category-top-menu ul li:hover .dropdown {
+    display: block;
 }
