@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,11 +13,56 @@
 </head>
 <body>
 
+    <header class="purple darken-4" style="margin-bottom: 40px;">
+        <nav class="purple darken-4 z-depth-0">
+            <div class="nav-wrapper">
+                <a href="#" data-target="mobile-sidenav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="sass.html">Sass</a></li>
+                    <li><a href="badges.html">Components</a></li>
+                    <li><a href="collapsible.html">JavaScript</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="logo-wrapper">
+            <div class="container" style="padding-bottom: 20px">
+                <h2 class="white-text">TheNerdShop</h2>
+            </div>
+        </div>
+        <div id="category-top-menu">
+            <ul class="container">
+                {% for item in menu %}
+                    <li>
+                        <a href="{% url 'shop:category' item.id %}">
+                            <img src="{% get_media_prefix %}{{ item.icon }}" class="icon" />
+                            <span class="title">
+                                {{ item.text }}
+                            </span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>        
+    </header>
+
+    <ul class="sidenav" id="mobile-sidenav">
+        <li><a href="sass.html">Sass</a></li>
+        <li><a href="badges.html">Components</a></li>
+        <li><a href="collapsible.html">Javascript</a></li>
+        <li><a href="mobile.html">Mobile</a></li>
+    </ul>    
+
     <div class="container content-container">
         {% block content %}
         {% endblock %}
     </div>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function(){
+            var sidenavElems = document.querySelectorAll('.sidenav');
+            M.Sidenav.init(sidenavElems, {});
+        });
+    </script>
 </body>
 </html>

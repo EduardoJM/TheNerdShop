@@ -7,5 +7,6 @@ from . import views
 app_name = 'shop'
 urlpatterns = [
     path('', views.index, name='index'),
-    path('products/', views.AllProducts.as_view(), name='products')
+    path('products/', views.AllProducts.as_view(), name='products'),
+    path('products/category/<int:category_id>', views.CategoryProducts.as_view(), name='category'),
 ] + static('media/', document_root=settings.MEDIA_ROOT)

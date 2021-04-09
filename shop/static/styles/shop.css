@@ -1,10 +1,3 @@
-.pagination-wrapper {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .products-row {
     display: flex;
     flex-wrap: wrap;
@@ -39,4 +32,51 @@
     font-weight: lighter;
     font-size: 1.6rem;
     margin: 0;
+}
+
+.pagination-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+
+/*
+ * Top Shop Menu
+ */
+#category-top-menu ul {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+#category-top-menu ul li {
+    width: 128px;
+    height: 128px;
+}
+
+#category-top-menu ul li a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#category-top-menu ul li a:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#category-top-menu ul li img {
+    width: 70%;
+    height: auto;
+    filter: brightness(0) invert(1);
+}
+#category-top-menu ul li span {
+    font-weight: bold;
+    color: #FFF;
 }

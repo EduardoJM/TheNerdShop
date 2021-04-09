@@ -38,7 +38,9 @@ admin.site.register(ProductImage, ProductImageAdmin)
 class CategoryAdmin(admin.ModelAdmin):
     fields = [
         'text',
-        'icon'
+        'icon',
+        'parent',
+        'top_menu',
     ]
 
 admin.site.register(Category, CategoryAdmin)
