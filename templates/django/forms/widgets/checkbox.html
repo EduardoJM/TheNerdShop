@@ -1,0 +1,11 @@
+<div class="switch">
+    <label>
+        <input
+            type="checkbox"
+            name="{{ widget.name }}"
+            {% if widget.value != None %} value="{{ widget.value }}" {% endif %}
+            {% include "django/forms/widgets/attrs.html" %}
+        />
+        <span class="lever"></span>
+    </label>
+</div>

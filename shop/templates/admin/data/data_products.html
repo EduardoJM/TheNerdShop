@@ -1,5 +1,84 @@
 {% extends "admin/base_site.html" %}
 
 {% block content %}
-    <h1>Hello!</h1>
+    
+    <h3>Monitoramento de Dados</h3>
+
+    <div class="row">
+        <div class="col s12 m6">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">{{ products|length }} Produtos</span>
+                    <p>Atualmente são {{ products|length }} produtos cadastrados em {{ categories|length }} categorias.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m6">
+            <canvas id="chart_products_by_category" width="400" height="400"></canvas>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min.js"></script>
+    <script type="text/javascript">
+        function htmlDecode(input){
+            var e = document.createElement('textarea');
+            e.innerHTML = input;
+            // handle case of empty input
+            return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+        }
+
+        var colors = [
+            { r: 255, g: 99, b: 132 },
+            { r: 255, g: 159, b: 64 },
+            { r: 255, g: 205, b: 86 },
+            { r: 75, g: 192, b: 192 },
+            { r: 54, g: 162, b: 235 },
+            { r: 153, g: 102, b: 255 },
+            { r: 201, g: 203, b: 207 },
+        ];
+
+        function randomColor () {
+            var cl = colors[Math.floor(Math.random() * colors.length)];
+            return [
+                'rgb(' + cl.r + ', ' + cl.g + ', ' + cl.b + ')',
+                'rgba(' + cl.r + ', ' + cl.g + ', ' + cl.b + ', 0.2)'
+            ];
+        }
+
+        var productsByCategoryData = JSON.parse(htmlDecode('{{ products_by_categories }}'));
+        var labels = [];
+        var data = [];
+        var bgColors = [];
+        var borderColors = [];
+        for (var i = 0; i < productsByCategoryData.length; i += 1) {
+            labels.push(productsByCategoryData[i].category.text)
+            data.push(productsByCategoryData[i].products.length);
+            var cl = randomColor();
+            bgColors.push(cl[1]);
+            borderColors.push(cl[0]);
+        }
+        var ctx = document.getElementById('chart_products_by_category').getContext('2d');
+        var graphData = {
+            labels: labels,
+            datasets: [{
+                label: 'Quantidade de Produtos por Categoria',
+                data: data,
+                backgroundColor: bgColors,
+                borderColor: borderColors,
+                borderWidth: 1
+            }]
+        };
+        var myBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: graphData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
 {% endblock %}
