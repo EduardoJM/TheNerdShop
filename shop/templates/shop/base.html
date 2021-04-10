@@ -14,20 +14,21 @@
 </head>
 <body>
 
-    <header class="purple darken-4" style="margin-bottom: 40px;">
-        <nav class="purple darken-4 z-depth-0">
+    <header style="margin-bottom: 40px;">
+        <nav class="z-depth-0">
             <div class="nav-wrapper">
                 <a href="#" data-target="mobile-sidenav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
                 <ul class="right hide-on-med-and-down">
                     <li><a href="{% url 'shop:index' %}">Início</a></li>
                     <li><a href="{% url 'shop:products' %}">Produtos</a></li>
-                    <li><a href="collapsible.html">JavaScript</a></li>
                 </ul>
             </div>
         </nav>
         <div class="logo-wrapper">
-            <div class="container" style="padding-bottom: 20px">
-                <h2 class="white-text">TheNerdShop</h2>
+            <div class="container">
+                <a href="{% url 'shop:index' %}">
+                    {% include 'shop/includes/logo.svg' %}
+                </a>
             </div>
         </div>
         <div id="category-top-menu">
@@ -41,7 +42,7 @@
                             </span>
                         </a>
                         {% if item.children|length > 0 %}
-                            <ul class="dropdown purple darken-4">
+                            <ul class="dropdown">
                                 {% for child in item.children %}
                                     <li class="dropdown-item">
                                         <a href="{% url 'shop:category' child.id %}">
@@ -61,10 +62,8 @@
     </header>
 
     <ul class="sidenav" id="mobile-sidenav">
-        <li><a href="sass.html">Sass</a></li>
-        <li><a href="badges.html">Components</a></li>
-        <li><a href="collapsible.html">Javascript</a></li>
-        <li><a href="mobile.html">Mobile</a></li>
+        <li><a href="{% url 'shop:index' %}">Início</a></li>
+        <li><a href="{% url 'shop:products' %}">Produtos</a></li>
     </ul>    
 
     <div class="container content-container">

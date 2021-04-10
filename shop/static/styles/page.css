@@ -1,3 +1,46 @@
+body {
+    background: #05040e;
+    color: #FFF;
+}
+
+header {
+    background: #05040e;
+}
+header nav {
+    background: #05040e !important;
+}
+header .logo-wrapper > .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+header .logo-wrapper > .container svg {
+    max-width: 100%;
+    width: 500px;
+    height: auto;
+    fill: #FFF;
+}
+
+
+.pagination li a {
+    color: #FFF !important;
+}
+.pagination li.active {
+    background-color: #4a148c !important;
+}
+.pagination li.active a {
+    color: #FFF !important;
+}
+.pagination li.disabled a {
+    color: #222 !important;
+}
+.slider .indicator-item.active {
+    background-color: #4a148c !important;
+}
+
+
+
 /*
  * Top Shop Menu
  */
@@ -7,6 +50,15 @@
     flex-direction: row;
     flex-wrap: wrap;
     position: relative;
+    background: transparent;
+    border-radius: 0;
+    transform: scale(1);
+    transition: all ease 0.5s;
+}
+#category-top-menu > ul:hover {
+    z-index: 400;
+    transform: scale(1.1);
+    background: #4a148c;
 }
 #category-top-menu ul li {
     width: 128px;
@@ -40,8 +92,9 @@
     left: 0;
     width: 100%;
     top: 100%;
-    z-index: 5000;
+    z-index: 450;
     display: none;
+    background: #6a1b9a;
 }
 #category-top-menu ul li:hover .dropdown {
     display: block;
