@@ -8,6 +8,7 @@
     <title>TheNerdShop | {% block title %}{% endblock %}</title>
     {% block head %}
     {% endblock %}
+    <link rel="stylesheet" href="{% static 'styles/page.css' %}" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
 </head>
@@ -18,8 +19,8 @@
             <div class="nav-wrapper">
                 <a href="#" data-target="mobile-sidenav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
                 <ul class="right hide-on-med-and-down">
-                    <li><a href="sass.html">Sass</a></li>
-                    <li><a href="badges.html">Components</a></li>
+                    <li><a href="{% url 'shop:index' %}">Início</a></li>
+                    <li><a href="{% url 'shop:products' %}">Produtos</a></li>
                     <li><a href="collapsible.html">JavaScript</a></li>
                 </ul>
             </div>
@@ -74,8 +75,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function(){
-            var sidenavElems = document.querySelectorAll('.sidenav');
-            M.Sidenav.init(sidenavElems, {});
+            M.Sidenav.init(document.querySelectorAll('.sidenav'), {});
+            M.Slider.init(document.querySelectorAll('.slider'), {});
         });
     </script>
 </body>

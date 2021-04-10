@@ -1,12 +1,20 @@
 from django.http import HttpResponse
 from django.views import generic
+from django.shortcuts import render
 import json
 
 from .models import Product, Category
 from .utils import db
 
 def index(request):
-    return HttpResponse('Hello World!')
+    promotional = Product.objects.filter(
+        discount_price__gt=0
+    ).order_by('-created_date')[:5]
+    context = {
+        'promotional_items': promotional,
+        'menu': db.get_toplevel_menu()
+    }
+    return render(request, 'shop/views/home.html', context)
 
 class CategoryProducts(generic.ListView):
     model = Product
