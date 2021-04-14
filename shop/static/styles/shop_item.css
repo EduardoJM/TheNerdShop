@@ -17,8 +17,8 @@
     background-size: 200%;
 }
 
-
 .preview-images-row {
+    background: rgba(0, 0, 0, 0.5);
     height: 140px;
     display: flex;
     align-items: stretch;
@@ -32,7 +32,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.5);
     user-select: none;
 }
 
