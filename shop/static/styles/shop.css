@@ -34,6 +34,19 @@
     margin: 0;
 }
 
+.product-item .detail-row {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.product-item .detail-row .btn {
+    background-color: transparent !important;
+}
+.product-item .detail-row .btn:hover {
+    background-color: #4a148c !important;
+}
+
 .pagination-wrapper {
     width: 100%;
     display: flex;

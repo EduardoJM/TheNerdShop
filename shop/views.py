@@ -40,3 +40,8 @@ class AllProducts(generic.ListView):
         context = super(AllProducts, self).get_context_data(**kwargs)
         context['menu'] = db.get_toplevel_menu()
         return context
+
+class ProductDetail(generic.DetailView):
+    model = Product
+    template_name = 'shop/views/product_detail.html'
+    

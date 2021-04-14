@@ -25,4 +25,7 @@
             R$ {{ item.price }}
         </h5>
     {% endif %}
+    <div class="detail-row">
+        <a href="{% url 'shop:product_detail' item.id %}" class="btn btn-small">Ver Detalhes</a>
+    </div>
 </div>
