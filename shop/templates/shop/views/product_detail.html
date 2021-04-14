@@ -34,8 +34,24 @@
                 </div>
             </div>
         </div>
-        <div class="col s12 l7 description blue">
-            BBBB
+        <div class="col s12 l7 description">
+            <h4 class="light">{{ product.name }}</h4>
+            {% if product.discount_price > 0 %}
+                <h5 class="light price-old">De <span>R$ {{ product.price }}</span></h5>
+                <h5 class="light price-new">Por <span>R$ {{ product.discount_price }}</span></h5>
+            {% else %}
+                <h5 class="light price-new">
+                    R$ {{ product.price }}
+                </h5>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <h4 class="light">Descrição:</h4>
+
+            <p>{{ product.description }}</p>
         </div>
     </div>
 
