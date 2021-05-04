@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheNerdShop | {% block title %}{% endblock %}</title>
+    {% block head %}
+    {% endblock %}
+    <link rel="stylesheet" href="{% static 'styles/page.css' %}" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+</head>
+<body>
+
+    <header style="margin-bottom: 40px;">
+        <nav class="z-depth-0">
+            <div class="nav-wrapper">
+                <a href="#" data-target="mobile-sidenav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="{% url 'shop:index' %}">Início</a></li>
+                    <li><a href="{% url 'shop:products' %}">Produtos</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="logo-wrapper">
+            <div class="container">
+                <a href="{% url 'shop:index' %}">
+                    {% include 'shop/includes/logo.svg' %}
+                </a>
+            </div>
+        </div>
+        <div id="category-top-menu">
+            <ul class="container">
+                {% for item in menu %}
+                    <li>
+                        <a href="{% url 'shop:category' item.id %}">
+                            <img src="{% get_media_prefix %}{{ item.icon }}" class="icon" />
+                            <span class="title">
+                                {{ item.text }}
+                            </span>
+                        </a>
+                        {% if item.children|length > 0 %}
+                            <ul class="dropdown">
+                                {% for child in item.children %}
+                                    <li class="dropdown-item">
+                                        <a href="{% url 'shop:category' child.id %}">
+                                            <img src="{% get_media_prefix %}{{ child.icon }}" class="icon" />
+                                            <span class="title">
+                                                {{ child.text }}
+                                            </span>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>        
+    </header>
+
+    <ul class="sidenav" id="mobile-sidenav">
+        <li><a href="{% url 'shop:index' %}">Início</a></li>
+        <li><a href="{% url 'shop:products' %}">Produtos</a></li>
+    </ul>    
+
+    <div class="container content-container">
+        {% block content %}
+        {% endblock %}
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function(){
+            M.Sidenav.init(document.querySelectorAll('.sidenav'), {});
+            M.Slider.init(document.querySelectorAll('.slider'), {});
+        });
+    </script>
+</body>
+</html>

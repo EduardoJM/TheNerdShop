@@ -1,0 +1,77 @@
+.preview-image {
+    width: 100%;
+    height: 400px;
+}
+
+.preview-image > div {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    outline: 0;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.preview-image > div:hover {
+    background-size: 200%;
+}
+
+.preview-images-row {
+    background: rgba(0, 0, 0, 0.5);
+    height: 140px;
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+.preview-images-row .left-arrow,
+.preview-images-row .right-arrow {
+    width: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+.preview-images-row .scrollable-content {
+    flex: 1;
+    overflow: hidden;
+}
+
+.preview-images-row ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    overflow: hidden;
+
+    transition: all 0.3s ease;
+}
+
+.preview-images-row li {
+    flex: 0 0 140px;
+    width: 140px;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 1px solid transparent;
+}
+
+.preview-images-row li img {
+    width: 140px;
+    height: auto;
+    transition: all 0.3s;
+}
+
+.preview-images-row li img:hover {
+    cursor: pointer;
+    transform: scale(1.2);
+    z-index: inherit;
+}

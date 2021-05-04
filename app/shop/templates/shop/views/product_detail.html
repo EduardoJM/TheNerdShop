@@ -1,0 +1,144 @@
+{% extends 'shop/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    {{ product.name }}
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'styles/shop_item.css' %}" />
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col s12 l5 preview-images-container white no-padding">
+            <div class="preview-image">
+                <div></div>
+            </div>
+            <div class="preview-images-row">
+                <div class="left-arrow">
+                    <i class="material-icons">chevron_left</i>
+                </div>
+                <div class="scrollable-content">
+                    <ul>
+                        {% for img in product.images.all %}
+                            <li>
+                                <img src="{% get_media_prefix %}/{{ img.image }}" alt="{{ img.alternative_text }}" />
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="right-arrow">
+                    <i class="material-icons">chevron_right</i>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 l7 description">
+            <h4 class="light">{{ product.name }}</h4>
+            {% if product.discount_price > 0 %}
+                <h5 class="light price-old">De <span>R$ {{ product.price }}</span></h5>
+                <h5 class="light price-new">Por <span>R$ {{ product.discount_price }}</span></h5>
+            {% else %}
+                <h5 class="light price-new">
+                    R$ {{ product.price }}
+                </h5>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <h4 class="light">Descrição:</h4>
+
+            <p>{{ product.description }}</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            function scroll_thumbs() {
+                var parent = document.querySelector('.preview-images-row ul');
+                var imgRect = document.querySelector('.preview-images-row ul li').getBoundingClientRect();
+                var imgs = document.querySelectorAll('.preview-images-row ul li img');
+                var widthItem = imgRect.width;
+                var widthTotal = imgs.length * widthItem;
+                parent.style.width = widthTotal + 'px';
+                // limitants
+                var min_position = 0;
+                var max_position = 0;
+                // current position
+                var position = min_position;
+
+                function calculate_boundings() {
+                    var newParent = document.querySelector('.preview-images-row .scrollable-content');
+                    var parentRc = newParent.getBoundingClientRect();
+                    max_position = widthTotal - parentRc.width
+                }
+                calculate_boundings();
+
+                function set_position() {
+                    if (position < min_position) {
+                        position = min_position;
+                    } else if (position > max_position) {
+                        position = max_position;
+                    }
+                    parent.style.transform = 'translateX(-' + position + 'px)';
+                }
+
+                function click_right() {
+                    position += 80;
+                    set_position();
+                }
+
+                function click_left() {
+                    position -= 80;
+                    set_position();
+                }
+
+                function resize() {
+                    calculate_boundings();
+                    set_position();
+                }
+
+                document.querySelector('.preview-images-row .right-arrow').addEventListener('click', click_right);
+                document.querySelector('.preview-images-row .left-arrow').addEventListener('click', click_left);
+                window.addEventListener('resize', resize);
+            }
+
+            function change_viewing_images() {
+                var container = document.querySelector('.preview-image > div');
+                var imgs = document.querySelectorAll('.preview-images-row ul li img');
+                
+                function click_image(e) {
+                    image = e.target;
+                    var src = image.getAttribute('src');
+                    container.style.backgroundImage = 'url(' + src + ')';
+                }
+
+                function mousemove_image(e) {
+                    var rc = container.getBoundingClientRect()
+                    var width2 = rc.width * 2 // 200%
+                    var height2 = rc.height * 2 // 200%
+                    var x = (e.pageX - rc.left)
+                    var y = (e.pageY - rc.top) * 2
+                    container.style.backgroundPositionX = -x + "px";
+                    container.style.backgroundPositionY = -y + "px";
+                }
+                function mouseleave_image(e) {
+                    container.style.backgroundPosition = 'center';
+                }
+                container.addEventListener('mousemove', mousemove_image);
+                container.addEventListener('mouseleave', mouseleave_image);
+
+                for (var i = 0; i < imgs.length; i += 1) {
+                    imgs[i].addEventListener('click', click_image);
+                }
+                click_image({ target: imgs[0] });
+            }
+
+            scroll_thumbs();
+            change_viewing_images();
+        });
+    </script>
+{% endblock %}
