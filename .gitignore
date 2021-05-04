@@ -1,3 +1,5 @@
 *.sqlite3
 __pycache__
-shop/migrations
+app/shop/migrations
+!app/shop/migrations/__init__.py
+*.env
