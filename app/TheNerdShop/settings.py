@@ -143,6 +143,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'shop', 'media')
 
 FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
+AUTH_USER_MODEL = 'shop.User'
 
 PAGSEGURO_ENV = env('PAGSEGURO_ENV')
 PAGSEGURO_BASE_URL = env('PAGSEGURO_BASE_URL')

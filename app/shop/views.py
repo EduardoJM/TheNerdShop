@@ -88,3 +88,12 @@ def sign_in(request):
 def sign_out(request):
     logout(request)
     return redirect('shop:sign_in')
+
+def cart(request):
+    if not request.user.is_authenticated:
+        return redirect('shop:index')
+
+    context = {
+        'cart': request.user.get_cart,
+    }
+    return render(request, 'shop/views/cart.html', context)

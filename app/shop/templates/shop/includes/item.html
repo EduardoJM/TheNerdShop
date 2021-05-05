@@ -28,4 +28,9 @@
     <div class="detail-row">
         <a href="{% url 'shop:product_detail' item.id %}" class="btn btn-small">Ver Detalhes</a>
     </div>
+    {% if request.user.is_authenticated %}
+        <div class="detail-row">
+            <a href="#" class="btn btn-small">Adicionar ao Carrinho</a>
+        </div>
+    {% endif %}
 </div>
