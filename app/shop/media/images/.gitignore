@@ -3,3 +3,6 @@ icons/tags/*
 
 products/*
 !products/.gitkeep
+
+avatars/*
+!avatars/.gitkeep

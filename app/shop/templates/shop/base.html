@@ -21,6 +21,9 @@
                 <ul class="right hide-on-med-and-down">
                     <li><a href="{% url 'shop:index' %}">Início</a></li>
                     <li><a href="{% url 'shop:products' %}">Produtos</a></li>
+                    {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'shop:sign_out' %}">Sair</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>

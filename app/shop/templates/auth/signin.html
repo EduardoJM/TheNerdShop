@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheNerdShop | SignUp</title>
+    {% block head %}
+    {% endblock %}
+    <link rel="stylesheet" href="{% static 'styles/sign.css' %}" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+</head>
+<body>
+
+    <div class="container">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+
+        <form method="POST" action="">
+            {% csrf_token %}
+            
+            <div class="row">
+                <div class="input-field col s12">
+                    <input name="username" id="username" type="text" class="validate" />
+                    <label for="username">Usuário</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input name="password" id="password" type="password" class="validate" />
+                    <label for="password">Senha</label>
+                </div>
+            </div>
+
+            <button class="btn waves-effect waves-light" type="submit">Entrar</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>
