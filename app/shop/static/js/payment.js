@@ -11,14 +11,20 @@ var PagSeguro = function(opts) {
     var options = Object.assign({}, defaultOptions, opts);
 
     function formSubmit(e) {
-        if (options.submited) {
+        if (document.getElementById('payment_form').getAttribute('data-ready') === 'true') {
+            function removeEl(el) { el.parentElement.removeChild(el); }
+            removeEl(document.querySelector('[name=credit_card_num]'));
+            removeEl(document.querySelector('[name=credit_card_brand]'));
+            removeEl(document.querySelector('[name=credit_card_cvv]'));
+            removeEl(document.querySelector('[name=credit_card_month]'));
+            removeEl(document.querySelector('[name=credit_card_year]'));
             return;
         }
-        options.submited = true;
         e.preventDefault();
 
+        var creditCardNum = document.getElementById('credit_card_num').value.replaceAll(' ', '');
         PagSeguroDirectPayment.createCardToken({
-            cardNumber: document.getElementById('credit_card_num').value.replace(' ', ''),
+            cardNumber: creditCardNum,
             brand: document.getElementById('credit_card_brand').value,
             cvv: document.getElementById('credit_card_cvv').value,
             expirationMonth: document.getElementById('credit_card_month').value,
@@ -52,6 +58,8 @@ var PagSeguro = function(opts) {
                 document.getElementById('error-message').innerHTML = 'Houve um erro desconhecido e não conseguimos encontrar a forma como deseja pagar.';
                 return;
             }
+            document.querySelector('[name=installments_quantity]').value = parseInt(installment.getAttribute('data-quantity'));
+            document.getElementById('payment_form').setAttribute('data-ready', 'true');
             document.getElementById('payment_form').submit();
             /*
             var checkoutData = {
@@ -101,7 +109,7 @@ var PagSeguro = function(opts) {
     }
 
     function creditCardNumberKeyUp(e) {
-        var cardNum = e.target.value.replace(' ', '');
+        var cardNum = e.target.value.replaceAll(' ', '');
         if (cardNum.length < 6) {
             document.getElementById('credit_card_num_brand').innerHTML = '';
             document.getElementById('error-message').innerHTML = '';

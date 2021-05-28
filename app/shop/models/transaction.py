@@ -1,0 +1,92 @@
+from xml.etree import ElementTree
+import datetime
+
+from django.db import models
+
+from .product import Product
+from .user import User
+
+class Transaction(models.Model):
+    date = models.DateTimeField('Data')
+    code = models.CharField('Código', max_length = 100)
+    reference = models.CharField('Referência', max_length=100)
+    transaction_type = models.IntegerField('Tipo')
+    transaction_status = models.IntegerField('Status')
+    last_event_date = models.DateTimeField('Data')
+    payment_method_type = models.IntegerField('Tipo do Método de Pagamento')
+    payment_method_code = models.IntegerField('Código do Método de Pagamento')
+    gross_amount = models.DecimalField('Valor Bruto', decimal_places=2, max_digits=10)
+    discount_amount = models.DecimalField('Desconto', decimal_places=2, max_digits=10)
+    fee_amount = models.DecimalField('Taxa', decimal_places=2, max_digits=10)
+    net_amount = models.DecimalField('Valor Líquido', decimal_places=2, max_digits=10)
+    extra_amount = models.DecimalField('Valor Extra', decimal_places=2, max_digits=10)
+    installment_count = models.IntegerField('Parcelas')
+    sender_name = models.CharField('Nome do Comprador', max_length = 100)
+    sender_email = models.CharField('Email do Comprador', max_length = 100)
+    sender_phone_code = models.CharField('DDD Telefone Comprador', max_length = 2)
+    sender_phone_number = models.CharField('Telefone Comprador', max_length = 9)
+    sender_cpf = models.CharField('CPF Comprador', max_length = 11, blank = True, null = True)
+    sender = models.ForeignKey(User, verbose_name = 'Comprador', on_delete = models.DO_NOTHING, blank = True, null = True)
+
+    def get_formated_sender_phone_number(self):
+        phone = str(self.sender_phone_number).strip()
+        if len(phone) == 9:
+            return phone[0] + ' ' + phone[1:5] + '-' + phone[5:]
+        if len(phone) == 8:
+            return phone[0:4] + '-' + phone[4:]
+        return phone
+
+    def sender_complete_phone(self):
+        return '(' + self.sender_phone_code + ') ' + self.get_formated_sender_phone_number()
+    sender_complete_phone.short_description = 'Telefone do Comprador'
+
+    def parse_values_from_xml(self, xml, parse_items):
+        tree = ElementTree.fromstring(xml)
+        self.date = datetime.datetime.fromisoformat(tree.find('date').text)
+        self.code = tree.find('code').text
+        self.reference = tree.find('reference').text
+        self.transaction_type = int(tree.find('type').text)
+        self.transaction_status = int(tree.find('status').text)
+        self.last_event_date = datetime.datetime.fromisoformat(tree.find('lastEventDate').text)
+        self.payment_method_type = int(tree.find('paymentMethod/type').text)
+        self.payment_method_code = int(tree.find('paymentMethod/code').text)
+        self.gross_amount = float(tree.find('grossAmount').text)
+        self.discount_amount = float(tree.find('discountAmount').text)
+        self.fee_amount = float(tree.find('feeAmount').text)
+        self.net_amount = float(tree.find('netAmount').text)
+        self.extra_amount = float(tree.find('extraAmount').text)
+        self.installment_count = int(tree.find('installmentCount').text)
+        self.sender_name = tree.find('sender/name').text
+        email = tree.find('sender/email').text
+        self.sender_email = email
+        self.sender_phone_code = tree.find('sender/phone/areaCode').text
+        self.sender_phone_number = tree.find('sender/phone/number').text
+        documents = tree.findall('sender/documents/document')
+        not_cpf = True
+        for doc in documents:
+            if (doc.find('type').text == 'CPF'):
+                cpf = doc.find('value').text
+                self.sender_cpf = cpf
+                self.sender = User.objects.filter(cpf = cpf).first()
+                not_cpf = False
+        if not_cpf:
+            self.sender = User.objects.filter(email = email).first()
+        self.save()
+        if parse_items:
+            items = tree.findall('items/item')
+            for item in items:
+                item_id = int(item.find('id').text)
+                quantity = int(item.find('quantity').text)
+                amount = float(item.find('amount').text)
+                trans_item = TransactionItem()
+                trans_item.transaction = self
+                trans_item.product = Product.objects.filter(pk = item_id).first()
+                trans_item.quantity = quantity
+                trans_item.amount = amount
+                trans_item.save()
+    
+class TransactionItem(models.Model):
+    transaction = models.ForeignKey(Transaction, verbose_name = 'Transação', on_delete = models.CASCADE)
+    product = models.ForeignKey(Product, verbose_name = 'Product', on_delete = models.DO_NOTHING, blank = True, null = True)
+    quantity = models.IntegerField('Quantidade')
+    amount = models.DecimalField('Valor', decimal_places=2, max_digits=10)

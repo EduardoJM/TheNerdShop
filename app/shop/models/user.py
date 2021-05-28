@@ -5,7 +5,7 @@ from .cart import Cart
 
 class User(AbstractUser):
     avatar = models.ImageField('Avatar', upload_to = 'images/avatars/')
-    cpf = models.CharField('CPF', max_length = 11)
+    cpf = models.CharField('CPF', max_length = 11, blank=True, unique=True)
     phone_code = models.CharField('DDD', max_length = 2)
     phone_number = models.CharField('Telefone', max_length = 9)
     billing_address_street = models.CharField('Endereço', max_length=100)

@@ -1,12 +1,15 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseServerError
 from django.views import generic
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
+from django.conf import settings
+
 import json
+import requests
 
 from .forms.auth import UserUpdateForm
-from .models import Product, Category, CartProduct
+from .models import Product, Category, CartProduct, Transaction
 from .utils import db
 
 from .forms.auth import UserCreationForm
@@ -114,11 +117,75 @@ def cart_confirm(request):
     }
     return render(request, 'shop/views/cart_confirm.html', context)
 
+def processPagSeguroResult(text):
+    pass
+    #tree = ElementTree.fromstring(text)
+    #id_element = tree.getchildren()
+    #return id_element[0].text
+
 def cart_payment(request):
     if not request.user.is_authenticated:
         return redirect('shop:index')
 
     cart = request.user.get_cart()
+
+    if request.method == 'POST':
+        print(request.POST)
+
+        PAGSEGURO_BASE_URL = settings.PAGSEGURO_BASE_URL
+        PAGSEGURO_EMAIL = settings.PAGSEGURO_EMAIL
+        PAGSEGURO_TOKEN = settings.PAGSEGURO_TOKEN
+        if not PAGSEGURO_BASE_URL or not PAGSEGURO_EMAIL or not PAGSEGURO_TOKEN:
+            raise HttpResponseServerError()
+        
+        serialized_items = cart.serialize_cart()
+        sender_email = request.user.email if settings.PAGSEGURO_ENV != 'SANDBOX' else 'test_the_nerd_shop@sandbox.pagseguro.com.br'
+        payload = {
+            'paymentMode': 'default',
+            'paymentMethod': 'creditCard',
+            'receiverEmail': 'eduardo_y05@outlook.com',
+            'currency': 'BRL',
+            **serialized_items,
+            'reference': 'RF0001',
+            'senderName': request.user.first_name + ' ' + request.user.last_name,
+            'senderCPF': request.user.cpf,
+            'senderAreaCode': request.user.phone_code,
+            'senderPhone': request.user.phone_number,
+            'senderEmail': sender_email,
+            'senderHash': request.POST.get('user_hash_token'),
+            # TODO: change the below settings if shipping used
+            'shippingAddressRequired': False,
+            'creditCardToken': request.POST.get('credit_card_token'),
+            'installmentQuantity': request.POST.get('installments_quantity'),
+            'installmentValue': request.POST.get('installment'),
+            'noInterestInstallmentQuantity': 3,
+            'creditCardHolderName': request.POST.get('credit_card_name'),
+            'creditCardHolderCPF': request.POST.get('credit_card_cpf'),
+            'creditCardHolderBirthDate': request.POST.get('credit_card_birth_date'),
+            'creditCardHolderAreaCode': request.POST.get('credit_card_phone_code'),
+            'creditCardHolderPhone': request.POST.get('credit_card_phone_number'),
+            'billingAddressStreet': request.user.billing_address_street,
+            'billingAddressNumber': request.user.billing_address_number,
+            'billingAddressComplement': request.user.billing_address_complement,
+            'billingAddressDistrict': request.user.billing_address_district,
+            'billingAddressPostalCode': request.user.billing_address_postal_code,
+            'billingAddressCity': request.user.billing_address_city,
+            'billingAddressState': request.user.billing_address_state,
+            'billingAddressCountry': request.user.billing_address_country,
+        }
+        print(payload)
+        url = PAGSEGURO_BASE_URL + 'transactions?email=' + PAGSEGURO_EMAIL + '&token=' + PAGSEGURO_TOKEN
+        headers = {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'}
+        response = requests.post(url, data = payload, headers = headers)
+        if response.status_code == 200:
+            transaction = Transaction()
+            transaction.parse_values_from_xml(response.text, True)
+            return redirect('shop:index')
+            #return HttpResponse(response.text, content_type="application/xml charset=utf-8")
+        print (response.text)
+        return HttpResponseServerError()
+        #return HttpResponse(json.dumps(payload), content_type="application/javascript; charset=utf-8")
+
     items = cart.get_cart_items()
     context = {
         'cart': cart,

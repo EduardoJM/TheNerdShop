@@ -60,8 +60,29 @@
     <div id="error-message"></div>
 
     <form method="POST" id="payment_form" action="">
+        {% csrf_token %}
 
         <div class="row">
+            <div class="input-field col s12 m6">
+                <input type="text" name="credit_card_name" id="credit_card_name" maxlength="100" />
+                <label for="credit_card_name">Nome Impresso no Cartão</label>
+            </div>
+            <div class="input-field col s12 m6">
+                <input type="text" name="credit_card_cpf" id="credit_card_cpf" maxlength="100" />
+                <label for="credit_card_cpf">CPF do Dono do Cartão</label>
+            </div>
+            <div class="input-field col s12 m6">
+                <input type="text" name="credit_card_birth_date" id="credit_card_birth_date" maxlength="100" class="datepicker" />
+                <label for="credit_card_birth_date">Data de Nascimento</label>
+            </div>
+            <div class="input-field col s6 m2">
+                <input type="text" name="credit_card_phone_code" id="credit_card_phone_code" maxlength="2" />
+                <label for="credit_card_phone_code">DDD</label>
+            </div>
+            <div class="input-field col s6 m4">
+                <input type="text" name="credit_card_phone_number" id="credit_card_phone_number" maxlength="9" />
+                <label for="credit_card_phone_number">Telefone</label>
+            </div>
             <div class="input-field col s12">
                 <input type="text" name="credit_card_num" id="credit_card_num" maxlength="20" />
                 <label for="credit_card_num">Número do Cartão</label>
@@ -86,12 +107,12 @@
             <div class="col s12">
                 <h5>Opções</h5>
                 <div id="installments"></div>
+                <input type="hidden" name="installments_quantity" />
             </div>
         </div>
 
         <input type="hidden" name="credit_card_token" id="credit_card_token" />
         <input type="hidden" name="user_hash_token" id="user_hash_token" />
-
 
         <button class="btn blue waves-effect waves-light" type="submit">Finalizar Compra</button>
     </form>
@@ -101,11 +122,19 @@
     Carregando...
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script type="text/javascript" src="https://unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js"></script>
 <script type="text/javascript" src="{% url 'payment:pagseguro_script' %}"></script>
 <script type="text/javascript" src="{% static 'js/payment.js' %}"></script>
 <script type="text/javascript">
-    VMasker(document.getElementById('credit_card_num')).maskPattern("9999 9999 9999 9999");
+    document.addEventListener('DOMContentLoaded', function(){
+        VMasker(document.getElementById('credit_card_num')).maskPattern("9999 9999 9999 9999");
+
+        M.Datepicker.init(document.querySelectorAll('.datepicker'), {
+            format: 'dd/mm/yyyy',
+            yearRange: 50,
+        });
+    });
 
     function parseNomBrl(str) { return parseFloat(str.replace(',', '.')); }
     PagSeguro({

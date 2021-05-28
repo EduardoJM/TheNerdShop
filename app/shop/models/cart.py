@@ -40,6 +40,18 @@ class Cart(models.Model):
             total += prod.total_price()
         return total
 
+    def serialize_cart(self):
+        products = self.get_cart_items()
+        items = {}
+        ind = 1
+        for prod in products:
+            items['itemId' + str(ind)] = str(prod.product.id)
+            items['itemDescription' + str(ind)] = str(prod.product.name)
+            items['itemAmount' + str(ind)] = "%.2f" % prod.product.real_price()
+            items['itemQuantity' + str(ind)] = str(prod.quantity)
+            ind = ind + 1
+        return items
+
     class Meta:
         verbose_name = 'Carrinho'
         verbose_name_plural = 'Carrinhos'
