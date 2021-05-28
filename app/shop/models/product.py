@@ -21,6 +21,11 @@ class Product(models.Model):
     def render_description(self):
         return format_html(markdown.markdown(self.description))
 
+    def real_price(self):
+        if self.discount_price > 0:
+            return self.discount_price
+        return self.price
+
     class Meta:
         verbose_name = 'Produto'
         verbose_name_plural = 'Produtos'

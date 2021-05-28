@@ -4,3 +4,4 @@ Pillow
 django-environ
 requests
 markdown
+Babel

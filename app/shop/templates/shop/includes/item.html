@@ -30,7 +30,7 @@
     </div>
     {% if request.user.is_authenticated %}
         <div class="detail-row">
-            <a href="#" class="btn btn-small">Adicionar ao Carrinho</a>
+            <a href="{% url 'shop:add_to_cart' item.id %}" class="btn btn-small">Adicionar ao Carrinho</a>
         </div>
     {% endif %}
 </div>

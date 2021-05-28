@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 import json
 
-from .models import Product, Category
+from .models import Product, Category, CartProduct
 from .utils import db
 
 from .forms.auth import UserCreationForm
@@ -93,7 +93,37 @@ def cart(request):
     if not request.user.is_authenticated:
         return redirect('shop:index')
 
+    cart = request.user.get_cart()
+    items = cart.get_cart_items()
     context = {
-        'cart': request.user.get_cart,
+        'cart': cart,
+        'cart_items': items,
     }
     return render(request, 'shop/views/cart.html', context)
+
+def add_to_cart(request, product_id):
+    if not request.user.is_authenticated:
+        return redirect('shop:index')
+    
+    prod = Product.objects.filter(pk = product_id).first()
+    if prod is None:
+        return redirect('shop:user_cart')
+    
+    cart = request.user.get_cart()
+    cart.add_to_cart(prod, 1)
+
+    return redirect('shop:user_cart')
+
+def remove_from_cart(request, register_id):
+    if not request.user.is_authenticated:
+        return redirect('shop:index')
+    
+    cart = request.user.get_cart()
+    prod_item = CartProduct.objects.filter(pk = register_id, cart = cart)
+
+    if prod_item is None:
+        return redirect('shop:user_cart')
+    
+    prod_item.delete()
+
+    return redirect('shop:user_cart')
