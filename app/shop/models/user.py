@@ -15,7 +15,7 @@ class User(AbstractUser):
     billing_address_postal_code = models.CharField('CEP', max_length=100)
     billing_address_city = models.CharField('Cidade', max_length=100)
     billing_address_state = models.CharField('Estado', max_length=100)
-    billing_address_country = models.CharField('País', max_length=100)
+    billing_address_country = models.CharField('País', max_length=100, default = 'BRA')
     cart = models.ForeignKey(Cart, on_delete = models.CASCADE, null = True, blank = True)
 
     def get_cart(self):

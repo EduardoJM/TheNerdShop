@@ -33,6 +33,3 @@ def pagseguro_script(request):
     if result.status_code == 200:
         return HttpResponse(result.text, content_type="application/javascript")
     raise HttpResponseBadRequest()
-
-def payment_finish(request):
-    return HttpResponse('oie')

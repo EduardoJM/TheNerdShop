@@ -6,7 +6,7 @@
 {% block content %}
     <div class="row">
         <div class="col s12">
-            <h4>Carrinho de Compras</h4>
+            <h4>Confirmar o Carrinho de Compras</h4>
         </div>
     </div>
     <table>
@@ -44,8 +44,8 @@
         </tbody>
     </table>
     <div style="text-align: center;">
-        <a class="blue waves-effect waves-light btn" title="Ir para a página de pagamento" href="{% url 'shop:user_cart_payment' %}">
-            Pagamento
+        <a class="blue waves-effect waves-light btn" title="Ir para a página de pagamento" href="{% url 'shop:user_cart_update' %}">
+            Continuar
         </a>
     </div>
 {% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'shop/base.html' %}
+{% load static brl %}
+
+{% block title %}Pagamento - The Nerd Shop{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'styles/cart.css' %}" />
+{% endblock %}
+
+<!-- TODO: add support to add cep and get all other informations. -->
+
+{% block content %}
+<div id="payment-box">
+    <h4>Confirmar Seus Dados</h4>
+
+    <form method="POST" id="payment_form" action="">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col s12">
+                <h5>Documentos</h5>
+            </div>
+
+            <div class="input-field col s12">
+                <input id="cpf" name="cpf" type="text" value="{{ request.user.cpf }}" maxlength="11" />
+                <label for="cpf">CPF</label>
+            </div>
+
+            <div class="col s12">
+                <h5>Dados Pessoais</h5>
+            </div>
+
+            <div class="input-field col s12 m6">
+                <input id="first_name" name="first_name" type="text" value="{{ request.user.first_name }}" maxlength="100" />
+                <label for="first_name">Nome</label>
+            </div>
+            <div class="input-field col s12 m6">
+                <input id="last_name" name="last_name" type="text" value="{{ request.user.last_name }}" maxlength="100" />
+                <label for="last_name">Sobrenome</label>
+            </div>
+
+            <div class="col s12">
+                <h5>Contato</h5>
+            </div>
+
+            <div class="input-field col s12 m3">
+                <input id="phone_code" name="phone_code" type="text" value="{{ request.user.phone_code }}" maxlength="2" />
+                <label for="phone_code">DDD</label>
+            </div>
+            <div class="input-field col s12 m9">
+                <input id="phone_number" name="phone_number" type="text" value="{{ request.user.phone_number }}" maxlength="9" />
+                <label for="phone_number">Telefone</label>
+            </div>
+
+            <div class="col s12">
+                <h5>Endereço</h5>
+            </div>
+            <div class="input-field col s12">
+                <input id="billing_address_postal_code" name="billing_address_postal_code" type="text" value="{{ request.user.billing_address_postal_code }}" maxlength="100" />
+                <label for="billing_address_postal_code">CEP</label>
+            </div>
+            <div class="input-field col s12 m9">
+                <input id="billing_address_street" name="billing_address_street" type="text" value="{{ request.user.billing_address_street }}" maxlength="100" />
+                <label for="billing_address_street">Rua</label>
+            </div>
+            <div class="input-field col s12 m3">
+                <input id="billing_address_number" name="billing_address_number" type="text" value="{{ request.user.billing_address_number }}" maxlength="100" />
+                <label for="billing_address_number">Número</label>
+            </div>
+            <div class="input-field col s12">
+                <input id="billing_address_complement" name="billing_address_complement" type="text" value="{{ request.user.billing_address_complement }}" maxlength="100" />
+                <label for="billing_address_complement">Complemento</label>
+            </div>
+            <div class="input-field col s12 m6">
+                <input id="billing_address_district" name="billing_address_district" type="text" value="{{ request.user.billing_address_district }}" maxlength="100" />
+                <label for="billing_address_district">Bairro</label>
+            </div>
+            <div class="input-field col s12 m6">
+                <input id="billing_address_city" name="billing_address_city" type="text" value="{{ request.user.billing_address_city }}" maxlength="100" />
+                <label for="billing_address_city">Cidade</label>
+            </div>
+            <div class="input-field col s12 m6">
+                <input id="billing_address_state" name="billing_address_state" type="text" value="{{ request.user.billing_address_state }}" maxlength="100" />
+                <label for="billing_address_state">Estado</label>
+            </div>
+            <div class="input-field col s12 m6">
+                <input id="billing_address_country" name="billing_address_country" type="text" value="{{ request.user.billing_address_country }}" maxlength="100" />
+                <label for="billing_address_country">Pais</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12" style="text-align: center;">
+                <button type="submit" class="btn blue waves-effect waves-light">
+                    Continuar
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

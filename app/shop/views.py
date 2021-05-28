@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 import json
 
+from .forms.auth import UserUpdateForm
 from .models import Product, Category, CartProduct
 from .utils import db
 
@@ -151,3 +152,15 @@ def remove_from_cart(request, register_id):
     prod_item.delete()
 
     return redirect('shop:user_cart')
+
+def cart_update_user(request):
+    if not request.user.is_authenticated:
+        return redirect('shop:index')
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST or None, instance = request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('shop:user_cart_payment')
+    context = {}
+    return render(request, 'shop/views/cart_update_user.html', context)
+
