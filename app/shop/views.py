@@ -101,6 +101,30 @@ def cart(request):
     }
     return render(request, 'shop/views/cart.html', context)
 
+def cart_confirm(request):
+    if not request.user.is_authenticated:
+        return redirect('shop:index')
+
+    cart = request.user.get_cart()
+    items = cart.get_cart_items()
+    context = {
+        'cart': cart,
+        'cart_items': items,
+    }
+    return render(request, 'shop/views/cart_confirm.html', context)
+
+def cart_payment(request):
+    if not request.user.is_authenticated:
+        return redirect('shop:index')
+
+    cart = request.user.get_cart()
+    items = cart.get_cart_items()
+    context = {
+        'cart': cart,
+        'cart_items': items,
+    }
+    return render(request, 'shop/views/cart_payment.html', context)
+
 def add_to_cart(request, product_id):
     if not request.user.is_authenticated:
         return redirect('shop:index')

@@ -1,0 +1,114 @@
+{% extends 'shop/base.html' %}
+{% load static brl %}
+
+{% block title %}Pagamento - The Nerd Shop{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'styles/cart.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div id="payment-box">
+    <div class="row">
+        <div class="col s12">
+            <h4>Processar Pagamento</h4>
+        </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantidade</th>
+                <th>Preço Unitário</th>
+                <th>Preço Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+                <tr>
+                    <td>
+                        {{ item.product.name }}
+                    </td>
+                    <td>
+                        {{ item.quantity }}
+                    </td>
+                    <td>
+                        {{ item.product.real_price|brl }}
+                    </td>
+                    <td>
+                        {{ item.total_price|brl }}
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td><b>Total</b></td>
+                <td>{{ cart.total_itens }}</td>
+                <td>-</td>
+                <td>{{ cart.total_price|brl }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4>Métodos de Pagamentos</h4>
+    <div id="payment-methods">
+        <h5>Cartões de Crédito</h5>
+        <div id="credit-card"></div>
+        <h5>Boleto Bancário</h5>
+        <div id="boleto"></div>
+    </div>
+
+    <div id="error-message"></div>
+
+    <form method="POST" id="payment_form">
+
+        <div class="row">
+            <div class="input-field col s12">
+                <input type="text" name="credit_card_num" id="credit_card_num" />
+                <label for="credit_card_num">Número do Cartão</label>
+                <span id="credit_card_num_brand"></span>
+            </div>
+            <input type="hidden" name="credit_card_brand" id="credit_card_brand" />
+            <div class="input-field col s12">
+                <input type="text" name="credit_card_cvv" id="credit_card_cvv" />
+                <label for="credit_card_cvv">CVV</label>
+            </div>
+            <div class="input-field col s12">
+                <input type="text" name="credit_card_month" id="credit_card_month" maxlength="2" minlength="2" />
+                <label for="credit_card_month">Mês de Expiração</label>
+            </div>
+            <div class="input-field col s12">
+                <label for="credit_card_year">Ano de Expiração</label>
+                <input type="text" name="credit_card_year" id="credit_card_year" maxlength="4" minlength="4" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <h5>Opções</h5>
+                <div id="installments"></div>
+            </div>
+        </div>
+
+        <input type="hidden" name="credit_card_token" id="credit_card_token" />
+        <input type="hidden" name="user_hash_token" id="user_hash_token" />
+
+
+        <button class="btn blue waves-effect waves-light" type="submit">Finalizar Compra</button>
+    </form>
+</div>
+
+<div id="loading-box">
+    Carregando...
+</div>
+
+<script type="text/javascript" src="{% url 'payment:pagseguro_script' %}"></script>
+<script type="text/javascript" src="{% static 'js/payment.js' %}"></script>
+<script type="text/javascript">
+    function parseNomBrl(str) { return parseFloat(str.replace(',', '.')); }
+    PagSeguro({
+        url: "{% url 'payment:payment_auth' %}",
+        finishUrl: "{% url 'payment:payment_finish' %}",
+        amount: parseNomBrl('{{ cart.total_price }}'),
+    });
+</script>
+{% endblock %}

@@ -2,3 +2,65 @@
     max-width: 150px;
     margin: 0 auto;
 }
+
+
+
+/* PAYMENT */
+#payment-box {
+    background: #FFF;
+    color: rgba(0, 0, 0, 0.8);
+    border-radius: 20px;
+    padding: 20px;
+}
+
+
+#payment-methods #credit-card,
+#payment-methods #boleto {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#payment-methods .payment-method-brand {
+    /*
+    width: 120px;
+    height: 100px;
+    background: #CCC;
+    border-radius: 10px;
+    */
+
+    margin: 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#payment-methods .payment-method-brand span {
+    display: none;
+}
+
+
+
+
+
+
+#loading-box {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #222;
+    color: #FFF;
+
+    z-index: 50000000;
+}

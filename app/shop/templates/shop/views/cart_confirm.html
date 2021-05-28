@@ -1,0 +1,51 @@
+{% extends 'shop/base.html' %}
+{% load static brl %}
+
+{% block title %}Confirmar Carrinho - The Nerd Shop{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col s12">
+            <h4>Carrinho de Compras</h4>
+        </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantidade</th>
+                <th>Preço Unitário</th>
+                <th>Preço Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+                <tr>
+                    <td>
+                        {{ item.product.name }}
+                    </td>
+                    <td>
+                        {{ item.quantity }}
+                    </td>
+                    <td>
+                        {{ item.product.real_price|brl }}
+                    </td>
+                    <td>
+                        {{ item.total_price|brl }}
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td><b>Total</b></td>
+                <td>{{ cart.total_itens }}</td>
+                <td>-</td>
+                <td>{{ cart.total_price|brl }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="text-align: center;">
+        <a class="blue waves-effect waves-light btn" title="Ir para a página de pagamento" href="{% url 'shop:user_cart_payment' %}">
+            Pagamento
+        </a>
+    </div>
+{% endblock %}

@@ -63,7 +63,7 @@
                 <td>-</td>
                 <td>{{ cart.total_price|brl }}</td>
                 <td>
-                    <a class="blue waves-effect waves-light btn">
+                    <a class="blue waves-effect waves-light btn" title="Confirmar Compra" href="{% url 'shop:user_cart_confirm' %}">
                         Comprar
                     </a>
                 </td>
