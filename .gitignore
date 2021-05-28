@@ -3,3 +3,4 @@ __pycache__
 app/shop/migrations
 !app/shop/migrations/__init__.py
 *.env
+env

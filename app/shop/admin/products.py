@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from ..models import Product, ProductImage, Category
+from ..forms.admin_shop import ProductForm
 
 class ProductImageInline(admin.TabularInline):
     model = Product.images.through
@@ -10,6 +11,7 @@ class ProductCategoryInline(admin.TabularInline):
     model = Product.categories.through
 
 class ProductAdmin(admin.ModelAdmin):
+    form = ProductForm
     fields = [
         'name',
         'description',

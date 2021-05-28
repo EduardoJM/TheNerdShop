@@ -1,0 +1,6 @@
+mysqlclient
+django
+Pillow
+django-environ
+requests
+markdown

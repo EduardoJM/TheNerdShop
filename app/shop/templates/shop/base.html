@@ -23,6 +23,8 @@
                     <li><a href="{% url 'shop:products' %}">Produtos</a></li>
                     {% if request.user.is_authenticated %}
                         <li><a href="{% url 'shop:sign_out' %}">Sair</a></li>
+                    {% else %}
+                        <li><a href="{% url 'shop:sign_in' %}">Entrar</a></li>
                     {% endif %}
                 </ul>
             </div>

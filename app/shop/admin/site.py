@@ -48,7 +48,7 @@ class ShopAdminSite(AdminSite):
             products_by_categories = json.dumps(products_by_categories),
         )
         return TemplateResponse(request, 'admin/data/data_products.html', context)
-
+    
     def get_app_list(self, request):
         app_list = super().get_app_list(request)
         app_list += [
