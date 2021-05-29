@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-+%livxc7%g67@6jn@h8+l_hg8#vg0o8y3%ni(8t7u*9_!2%(-i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'https://sandbox.pagseguro.uol.com.br']
 
 
 # Application definition
@@ -147,6 +147,7 @@ AUTH_USER_MODEL = 'shop.User'
 
 PAGSEGURO_ENV = env('PAGSEGURO_ENV')
 PAGSEGURO_BASE_URL = env('PAGSEGURO_BASE_URL')
+PAGSEGURO_BASE_URL3 = env('PAGSEGURO_BASE_URL3')
 PAGSEGURO_EMAIL = env('PAGSEGURO_' + PAGSEGURO_ENV + '_EMAIL')
 PAGSEGURO_TOKEN = env('PAGSEGURO_' + PAGSEGURO_ENV + '_TOKEN')
 PAGSEGURO_SCRIPT = env('PAGSEGURO_SCRIPT')

@@ -2,9 +2,11 @@ from xml.etree import ElementTree
 import datetime
 
 from django.db import models
+from django.utils.html import format_html
 
 from .product import Product
 from .user import User
+from ..utils.values import brl
 
 class Transaction(models.Model):
     date = models.DateTimeField('Data')
@@ -12,7 +14,7 @@ class Transaction(models.Model):
     reference = models.CharField('Referência', max_length=100)
     transaction_type = models.IntegerField('Tipo')
     transaction_status = models.IntegerField('Status')
-    last_event_date = models.DateTimeField('Data')
+    last_event_date = models.DateTimeField('Data do Último Evento')
     payment_method_type = models.IntegerField('Tipo do Método de Pagamento')
     payment_method_code = models.IntegerField('Código do Método de Pagamento')
     gross_amount = models.DecimalField('Valor Bruto', decimal_places=2, max_digits=10)
@@ -28,6 +30,18 @@ class Transaction(models.Model):
     sender_cpf = models.CharField('CPF Comprador', max_length = 11, blank = True, null = True)
     sender = models.ForeignKey(User, verbose_name = 'Comprador', on_delete = models.DO_NOTHING, blank = True, null = True)
 
+    def transaction_items(self):
+        items = self.transactionitem_set.all()
+        html = '<ul>'
+        for item in items:
+            if item.product:
+                html += '<li>' + str(item.product.id) + ' - ' + item.product.name + ' - ' + str(item.quantity) + ' x ' + brl(item.amount) + '</li>'
+            else:
+                html += '<li>Item deletado do estoque - '  + str(item.quantity) + ' x ' + brl(item.amount) + '</li>'
+        html += '</ul>'
+        return format_html(html)
+    transaction_items.short_description = 'Itens'
+
     def get_formated_sender_phone_number(self):
         phone = str(self.sender_phone_number).strip()
         if len(phone) == 9:
@@ -39,6 +53,28 @@ class Transaction(models.Model):
     def sender_complete_phone(self):
         return '(' + self.sender_phone_code + ') ' + self.get_formated_sender_phone_number()
     sender_complete_phone.short_description = 'Telefone do Comprador'
+
+    def status(self):
+        if self.transaction_status == 1:
+            return 'Aguardando Pagamento'
+        elif self.transaction_status == 2:
+            return 'Em análise'
+        elif self.transaction_status == 3:
+            return 'Paga'
+        elif self.transaction_status == 4:
+            return 'Disponível'
+        elif self.transaction_status == 5:
+            return 'Em disputa'
+        elif self.transaction_status == 6:
+            return 'Devolvida'
+        elif self.transaction_status == 7:
+            return 'Cancelada'
+        elif self.transaction_status == 8:
+            return 'Debitado'
+        elif self.transaction_status == 9:
+            return 'Retenção Temporária'
+        return 'Desconhecido'
+    status.short_description = 'Status'
 
     def parse_values_from_xml(self, xml, parse_items):
         tree = ElementTree.fromstring(xml)

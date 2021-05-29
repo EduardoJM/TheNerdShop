@@ -7,6 +7,7 @@ from django.conf import settings
 
 import json
 import requests
+from xml.etree import ElementTree
 
 from .forms.auth import UserUpdateForm
 from .models import Product, Category, CartProduct, Transaction
@@ -157,7 +158,7 @@ def cart_payment(request):
             'shippingAddressRequired': False,
             'creditCardToken': request.POST.get('credit_card_token'),
             'installmentQuantity': request.POST.get('installments_quantity'),
-            'installmentValue': request.POST.get('installment'),
+            'installmentValue': "%.2f" % float(request.POST.get('installment')),
             'noInterestInstallmentQuantity': 3,
             'creditCardHolderName': request.POST.get('credit_card_name'),
             'creditCardHolderCPF': request.POST.get('credit_card_cpf'),
@@ -172,6 +173,8 @@ def cart_payment(request):
             'billingAddressCity': request.user.billing_address_city,
             'billingAddressState': request.user.billing_address_state,
             'billingAddressCountry': request.user.billing_address_country,
+            # TODO:
+            'notificationURL': 'http://localhost:8000/shop/transaction/notification',
         }
         print(payload)
         url = PAGSEGURO_BASE_URL + 'transactions?email=' + PAGSEGURO_EMAIL + '&token=' + PAGSEGURO_TOKEN
@@ -231,3 +234,23 @@ def cart_update_user(request):
     context = {}
     return render(request, 'shop/views/cart_update_user.html', context)
 
+def transaction_update(request, code):
+    PAGSEGURO_BASE_URL3 = settings.PAGSEGURO_BASE_URL3
+    PAGSEGURO_EMAIL = settings.PAGSEGURO_EMAIL
+    PAGSEGURO_TOKEN = settings.PAGSEGURO_TOKEN
+    if not PAGSEGURO_BASE_URL3 or not PAGSEGURO_EMAIL or not PAGSEGURO_TOKEN:
+        raise HttpResponseServerError()
+
+    url = PAGSEGURO_BASE_URL3 + 'transactions/' + code + '?email=' + PAGSEGURO_EMAIL + '&token=' + PAGSEGURO_TOKEN
+    #headers = {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'}
+    response = requests.get(url)
+    if response.status_code == 200:
+        tree = ElementTree.fromstring(response.text)
+        Transaction.objects.filter(code = code).update(transaction_status = int(tree.find('status').text))
+        return redirect('admin:shop_transaction_changelist')
+    
+    return HttpResponseServerError()
+
+def transaction_notification(request):
+    print(request)
+    return HttpResponse('oie')

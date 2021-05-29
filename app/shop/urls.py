@@ -19,4 +19,6 @@ urlpatterns = [
     path('sign-up/', views.sign_up, name = 'sign_up'),
     path('sign-in/', views.sign_in, name = 'sign_in'),
     path('sign-out/', views.sign_out, name = 'sign_out'),
+    path('transaction/update/<code>', views.transaction_update, name = 'transaction_update_status'),
+    path('transaction/notification', views.transaction_notification, name = 'transaction_notification'),
 ] + static('media/', document_root=settings.MEDIA_ROOT)
