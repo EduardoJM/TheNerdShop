@@ -10,10 +10,12 @@ class Cart(models.Model):
     )
 
     def add_to_cart(self, product, quantity):
-        cart_item = self.products.filter(pk = product.id).first()
+        cart_item = CartProduct.objects.filter(product = product, cart = self).first()
+        # self.products.filter(pk = product.id).first()
         if cart_item is not None:
             # TODO: check quantity here
             cart_item.quantity = cart_item.quantity + quantity
+            cart_item.save()
             return
         cart_item = CartProduct()
         cart_item.cart = self
