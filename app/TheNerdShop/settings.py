@@ -138,7 +138,7 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_URL = '/shop/media/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'shop', 'media')
 
 FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
