@@ -30,6 +30,9 @@ class Transaction(models.Model):
     sender_cpf = models.CharField('CPF Comprador', max_length = 11, blank = True, null = True)
     sender = models.ForeignKey(User, verbose_name = 'Comprador', on_delete = models.DO_NOTHING, blank = True, null = True)
 
+    def __str__(self):
+        return 'Compra ' + self.reference
+
     def transaction_items(self):
         items = self.transactionitem_set.all()
         html = '<ul>'
@@ -121,6 +124,10 @@ class Transaction(models.Model):
                 trans_item.amount = amount
                 trans_item.save()
     
+    class Meta:
+        verbose_name = 'Pedido'
+        verbose_name_plural = 'Pedidos'
+
 class TransactionItem(models.Model):
     transaction = models.ForeignKey(Transaction, verbose_name = 'Transação', on_delete = models.CASCADE)
     product = models.ForeignKey(Product, verbose_name = 'Product', on_delete = models.DO_NOTHING, blank = True, null = True)

@@ -10,7 +10,7 @@ import requests
 from xml.etree import ElementTree
 
 from .forms.auth import UserUpdateForm
-from .models import Product, Category, CartProduct, Transaction
+from .models import Product, Category, CartProduct, Transaction, TransactionItem
 from .utils import db
 
 from .forms.auth import UserCreationForm
@@ -118,12 +118,6 @@ def cart_confirm(request):
     }
     return render(request, 'shop/views/cart_confirm.html', context)
 
-def processPagSeguroResult(text):
-    pass
-    #tree = ElementTree.fromstring(text)
-    #id_element = tree.getchildren()
-    #return id_element[0].text
-
 def cart_payment(request):
     if not request.user.is_authenticated:
         return redirect('shop:index')
@@ -173,7 +167,7 @@ def cart_payment(request):
             'billingAddressCity': request.user.billing_address_city,
             'billingAddressState': request.user.billing_address_state,
             'billingAddressCountry': request.user.billing_address_country,
-            # TODO:
+            # TODO: change this to use the webhooks for notification
             'notificationURL': 'http://localhost:8000/shop/transaction/notification',
         }
         print(payload)
@@ -242,7 +236,6 @@ def transaction_update(request, code):
         raise HttpResponseServerError()
 
     url = PAGSEGURO_BASE_URL3 + 'transactions/' + code + '?email=' + PAGSEGURO_EMAIL + '&token=' + PAGSEGURO_TOKEN
-    #headers = {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'}
     response = requests.get(url)
     if response.status_code == 200:
         tree = ElementTree.fromstring(response.text)

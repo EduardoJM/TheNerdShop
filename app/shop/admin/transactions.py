@@ -9,7 +9,7 @@ class TransactionAdmin(admin.ModelAdmin):
         'status',
         'reference',
         'transaction_items',
-        'last_event_date',
+        #'last_event_date',
         'gross_amount',
         'discount_amount',
         'fee_amount',
@@ -24,7 +24,11 @@ class TransactionAdmin(admin.ModelAdmin):
     ]
 
     def user_actions(self, obj):
-        return format_html('<a href="%s">Atualizar</a>' % reverse('shop:transaction_update_status', args=[obj.code]))
+        return format_html("""
+            <a href="%s">Atualizar Status</a>
+            """ % (
+                reverse('shop:transaction_update_status', args=[obj.code])
+            ))
     user_actions.short_description = 'Ações'
 
     def has_change_permission(self, request, obj = None):
