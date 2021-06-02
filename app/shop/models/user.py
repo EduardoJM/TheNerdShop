@@ -26,3 +26,7 @@ class User(AbstractUser):
             self.save()
             return cart
         return self.cart
+
+    def cart_products_count(self):
+        cart = self.get_cart()
+        return cart.total_itens()

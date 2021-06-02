@@ -9,6 +9,9 @@ header {
 header nav {
     background: #05040e !important;
 }
+header nav ul li span.badge.new {
+    background-color: #4a148c !important;
+}
 header .logo-wrapper > .container {
     display: flex;
     align-items: center;
@@ -39,6 +42,10 @@ header .logo-wrapper > .container svg {
     background-color: #4a148c !important;
 }
 
+
+.btn.thenerdshop {
+    background-color: #4a148c !important;
+}
 
 
 /*
