@@ -13,61 +13,72 @@
             <h4>Carrinho de Compras</h4>
         </div>
     </div>
-    <table>
-        <thead>
-            <tr>
-                <th width="150">Foto</th>
-                <th>Item</th>
-                <th>Quantidade</th>
-                <th>Preço Unitário</th>
-                <th>Preço Total</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in cart_items %}
+    {% if cart_items|length == 0 %}
+        <div class="row">
+            <div class="col s12">
+                <h5 class="center">Seu carrinho de compras está vazio!</h5>
+            </div>
+        </div>
+    {% else %}
+        <table>
+            <thead>
                 <tr>
+                    <th width="150">Foto</th>
+                    <th>Item</th>
+                    <th>Tamanho</th>
+                    <th>Quantidade</th>
+                    <th>Preço Unitário</th>
+                    <th>Preço Total</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                    <tr>
+                        <td>
+                            {% with img=item.product.images.all.0 %}
+                                {% if img %}
+                                    <img class="cart-image" src="{% get_media_prefix %}/{{ img.image }}" alt="{{ img.alternative_text }}" />
+                                {% endif %}
+                            {% endwith %}
+                        </td>
+                        <td>
+                            {{ item.product.name }}
+                        </td>
+                        <td>{{ item.product_size }}</td>
+                        <td>
+                            {{ item.quantity }}
+                        </td>
+                        <td>
+                            {{ item.product.real_price|brl }}
+                        </td>
+                        <td>
+                            {{ item.total_price|brl }}
+                        </td>
+                        <td>
+                            <a class="orange waves-effect waves-light btn">
+                                <i class="material-icons">edit</i>
+                            </a>
+                            <a class="red waves-effect waves-light btn" title="Remover do Carrinho" href="{% url 'shop:remove_from_cart' item.id %}">
+                                <i class="material-icons">delete</i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td><b>Total</b></td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>{{ cart.total_itens }}</td>
+                    <td>-</td>
+                    <td>{{ cart.total_price|brl }}</td>
                     <td>
-                        {% with img=item.product.images.all.0 %}
-                            {% if img %}
-                                <img class="cart-image" src="{% get_media_prefix %}/{{ img.image }}" alt="{{ img.alternative_text }}" />
-                            {% endif %}
-                        {% endwith %}
-                    </td>
-                    <td>
-                        {{ item.product.name }}
-                    </td>
-                    <td>
-                        {{ item.quantity }}
-                    </td>
-                    <td>
-                        {{ item.product.real_price|brl }}
-                    </td>
-                    <td>
-                        {{ item.total_price|brl }}
-                    </td>
-                    <td>
-                        <a class="orange waves-effect waves-light btn">
-                            <i class="material-icons">edit</i>
-                        </a>
-                        <a class="red waves-effect waves-light btn" title="Remover do Carrinho" href="{% url 'shop:remove_from_cart' item.id %}">
-                            <i class="material-icons">delete</i>
+                        <a class="thenerdshop waves-effect waves-light btn" title="Confirmar Compra" href="{% url 'shop:user_cart_confirm' %}">
+                            Comprar
                         </a>
                     </td>
                 </tr>
-            {% endfor %}
-            <tr>
-                <td><b>Total</b></td>
-                <td>-</td>
-                <td>{{ cart.total_itens }}</td>
-                <td>-</td>
-                <td>{{ cart.total_price|brl }}</td>
-                <td>
-                    <a class="thenerdshop waves-effect waves-light btn" title="Confirmar Compra" href="{% url 'shop:user_cart_confirm' %}">
-                        Comprar
-                    </a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    {% endif %}
 {% endblock %}

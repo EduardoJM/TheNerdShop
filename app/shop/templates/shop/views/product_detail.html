@@ -44,6 +44,39 @@
                     R$ {{ product.price }}
                 </h5>
             {% endif %}
+            <form class="product-add-form" method="POST" action="{% url 'shop:add_to_cart' %}">
+                {% csrf_token %}
+                <input type="hidden" name="product_id" value="{{ product.id }}" />
+                {% if product.has_various_sizes %}
+                    <h6>Escolha o Tamanho:</h6>
+                    {% with sizes=product.get_sizes %}
+                        {% for sz in sizes %}
+                            <label>
+                                <input name="size" type="radio" value="{{ sz }}" {% if forloop.counter == 1 %} checked="checked" {% endif %} />
+                                <span>{{ sz }}</span>
+                            </label>
+                        {% endfor %}
+                    {% endwith %}
+                {% endif %}
+                <div class="quantity-row">
+                    <div class="input-field">
+                        <select name="quantity">
+                            <option value="" disabled>Selecione a quantidade</option>
+                            <option value="1" selected>1 unidade</option>
+                            <option value="2">2 unidades</option>
+                            <option value="3">3 unidades</option>
+                            <option value="4">4 unidades</option>
+                            <option value="5">5 unidades</option>
+                            <option value="6">6 unidades</option>
+                            <option value="7">7 unidades</option>
+                        </select>
+                        <label>Quantidade</label>
+                    </div>
+                </div>
+                <div class="button-row">
+                    <button class="btn thenerdshop waves-effect waves-light" type="submit">Adicionar ao Carrinho</button>
+                </div>
+            </form>
         </div>
     </div>
 

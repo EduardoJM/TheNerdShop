@@ -28,9 +28,14 @@
     <div class="detail-row">
         <a href="{% url 'shop:product_detail' item.id %}" class="btn btn-small">Ver Detalhes</a>
     </div>
-    {% if request.user.is_authenticated %}
-        <div class="detail-row">
-            <a href="{% url 'shop:add_to_cart' item.id %}" class="btn btn-small">Adicionar ao Carrinho</a>
-        </div>
+    {% if request.user.is_authenticated and not item.has_various_sizes %}
+        <form method="POST" action="{% url 'shop:add_to_cart' %}">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ item.id }}" />
+            <input type="hidden" name="quantity" value="1" />
+            <div class="detail-row">
+                <button class="btn btn-small" type="submit">Adicionar ao Carrinho</button>
+            </div>
+        </form>
     {% endif %}
 </div>

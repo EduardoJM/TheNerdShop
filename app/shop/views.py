@@ -10,7 +10,7 @@ import requests
 from xml.etree import ElementTree
 
 from .forms.auth import UserUpdateForm
-from .models import Product, Category, CartProduct, Transaction, TransactionItem
+from .models import Product, ProductSize, Category, CartProduct, Transaction, TransactionItem
 from .utils import db
 
 from .forms.auth import UserCreationForm
@@ -190,16 +190,26 @@ def cart_payment(request):
     }
     return render(request, 'shop/views/cart_payment.html', context)
 
-def add_to_cart(request, product_id):
+def add_to_cart(request):
     if not request.user.is_authenticated:
         return redirect('shop:index')
+    if request.method != 'POST':
+        return redirect('shop:index')
+    
+    product_id = request.POST['product_id']
+    size = request.POST.get('size', None)
+    quantity = request.POST['quantity']
     
     prod = Product.objects.filter(pk = product_id).first()
     if prod is None:
         return redirect('shop:user_cart')
+
+    if size is None:
+        size = 'ÚNICO'
+    size_obj = ProductSize.objects.filter(description = size).first()
     
     cart = request.user.get_cart()
-    cart.add_to_cart(prod, 1)
+    cart.add_to_cart(prod, quantity, size_obj)
 
     return redirect('shop:user_cart')
 
