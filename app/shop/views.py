@@ -107,6 +107,14 @@ def cart(request):
     return render(request, 'shop/views/cart.html', context)
 
 def cart_confirm(request):
+    if request.method != 'POST':
+        return redirect('shop:user_cart')
+    try:
+        referer = request.META['HTTP_REFERER']
+    except:
+        referer = '/'
+    if not referer.endswith('/cart/'):
+        return redirect('shop:user_cart')
     if not request.user.is_authenticated:
         return redirect('shop:index')
 
@@ -121,10 +129,23 @@ def cart_confirm(request):
 def cart_payment(request):
     if not request.user.is_authenticated:
         return redirect('shop:index')
+    if request.method != 'POST':
+        return redirect('shop:index')
+
+    try:
+        referer = request.META['HTTP_REFERER']
+    except:
+        referer = '/'
+
+    if referer.endswith('/cart/user/update/'):
+        form = UserUpdateForm(request.POST or None, instance = request.user)
+        if form.is_valid():
+            form.save()
+    elif not referer.endswith('/cart/payment/'):
+        return redirect('shop:user_cart')
 
     cart = request.user.get_cart()
-
-    if request.method == 'POST':
+    if referer.endswith('/cart/payment/'):
         print(request.POST)
 
         PAGSEGURO_BASE_URL = settings.PAGSEGURO_BASE_URL
@@ -155,10 +176,10 @@ def cart_payment(request):
             'installmentValue': "%.2f" % float(request.POST.get('installment')),
             'noInterestInstallmentQuantity': 3,
             'creditCardHolderName': request.POST.get('credit_card_name'),
-            'creditCardHolderCPF': request.POST.get('credit_card_cpf'),
+            'creditCardHolderCPF': str(request.POST.get('credit_card_cpf')).replace('-', '').replace('.', ''),
             'creditCardHolderBirthDate': request.POST.get('credit_card_birth_date'),
             'creditCardHolderAreaCode': request.POST.get('credit_card_phone_code'),
-            'creditCardHolderPhone': request.POST.get('credit_card_phone_number'),
+            'creditCardHolderPhone': str(request.POST.get('credit_card_phone_number')).replace('-', ''),
             'billingAddressStreet': request.user.billing_address_street,
             'billingAddressNumber': request.user.billing_address_number,
             'billingAddressComplement': request.user.billing_address_complement,
@@ -170,13 +191,13 @@ def cart_payment(request):
             # TODO: change this to use the webhooks for notification
             'notificationURL': 'http://localhost:8000/shop/transaction/notification',
         }
-        print(payload)
+        #print(payload)
         url = PAGSEGURO_BASE_URL + 'transactions?email=' + PAGSEGURO_EMAIL + '&token=' + PAGSEGURO_TOKEN
         headers = {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'}
         response = requests.post(url, data = payload, headers = headers)
         if response.status_code == 200:
             transaction = Transaction()
-            transaction.parse_values_from_xml(response.text, True)
+            transaction.parse_values_from_xml(response.text, cart)
             return redirect('shop:index')
             #return HttpResponse(response.text, content_type="application/xml charset=utf-8")
         print (response.text)
@@ -230,11 +251,14 @@ def remove_from_cart(request, register_id):
 def cart_update_user(request):
     if not request.user.is_authenticated:
         return redirect('shop:index')
-    if request.method == 'POST':
-        form = UserUpdateForm(request.POST or None, instance = request.user)
-        if form.is_valid():
-            form.save()
-            return redirect('shop:user_cart_payment')
+    if request.method != 'POST':
+        return redirect('shop:user_cart')
+    try:
+        referer = request.META['HTTP_REFERER']
+    except:
+        referer = '/'
+    if not referer.endswith('/cart/confirm/'):
+        return redirect('shop:user_cart')
     context = {}
     return render(request, 'shop/views/cart_update_user.html', context)
 

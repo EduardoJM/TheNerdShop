@@ -13,7 +13,7 @@
 <div id="payment-box">
     <h4>Confirmar Seus Dados</h4>
 
-    <form method="POST" id="payment_form" action="">
+    <form method="POST" id="payment_form" action="{% url 'shop:user_cart_payment' %}">
         {% csrf_token %}
         <div class="row">
             <div class="col s12">

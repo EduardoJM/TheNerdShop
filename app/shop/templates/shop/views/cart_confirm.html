@@ -13,6 +13,7 @@
         <thead>
             <tr>
                 <th>Item</th>
+                <th>Tamanho</th>
                 <th>Quantidade</th>
                 <th>Preço Unitário</th>
                 <th>Preço Total</th>
@@ -24,6 +25,7 @@
                     <td>
                         {{ item.product.name }}
                     </td>
+                    <td>{{ item.size }}</td>
                     <td>
                         {{ item.quantity }}
                     </td>
@@ -37,6 +39,7 @@
             {% endfor %}
             <tr>
                 <td><b>Total</b></td>
+                <td>-</td>
                 <td>{{ cart.total_itens }}</td>
                 <td>-</td>
                 <td>{{ cart.total_price|brl }}</td>
@@ -44,8 +47,11 @@
         </tbody>
     </table>
     <div style="text-align: center;">
-        <a class="thenerdshop waves-effect waves-light btn" title="Ir para a página de pagamento" href="{% url 'shop:user_cart_update' %}">
-            Continuar
-        </a>
+        <form action="{% url 'shop:user_cart_update' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="thenerdshop waves-effect waves-light btn" title="Ir para a página de pagamento">
+                Continuar
+            </button>
+        </form>
     </div>
 {% endblock %}

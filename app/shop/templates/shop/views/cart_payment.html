@@ -18,6 +18,7 @@
         <thead>
             <tr>
                 <th>Item</th>
+                <th>Tamanho</th>
                 <th>Quantidade</th>
                 <th>Preço Unitário</th>
                 <th>Preço Total</th>
@@ -29,6 +30,7 @@
                     <td>
                         {{ item.product.name }}
                     </td>
+                    <td>{{ item.size }}</td>
                     <td>
                         {{ item.quantity }}
                     </td>
@@ -42,6 +44,7 @@
             {% endfor %}
             <tr>
                 <td><b>Total</b></td>
+                <td>-</td>
                 <td>{{ cart.total_itens }}</td>
                 <td>-</td>
                 <td>{{ cart.total_price|brl }}</td>
@@ -80,7 +83,7 @@
                 <label for="credit_card_phone_code">DDD</label>
             </div>
             <div class="input-field col s6 m4">
-                <input type="text" name="credit_card_phone_number" id="credit_card_phone_number" maxlength="9" />
+                <input type="text" name="credit_card_phone_number" id="credit_card_phone_number" maxlength="10" />
                 <label for="credit_card_phone_number">Telefone</label>
             </div>
             <div class="input-field col s12">
@@ -128,12 +131,16 @@
 <script type="text/javascript" src="{% static 'js/payment.js' %}"></script>
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function(){
+        VMasker(document.getElementById('credit_card_cpf')).maskPattern("999.999.999-99");
+        VMasker(document.getElementById('credit_card_birth_date')).maskPattern("99/99/9999");
+        
         VMasker(document.getElementById('credit_card_num')).maskPattern("9999 9999 9999 9999");
-
-        M.Datepicker.init(document.querySelectorAll('.datepicker'), {
-            format: 'dd/mm/yyyy',
-            yearRange: 50,
-        });
+        VMasker(document.getElementById('credit_card_phone_code')).maskPattern("99");
+        VMasker(document.getElementById('credit_card_phone_number')).maskPattern("99999-9999");
+        VMasker(document.getElementById('credit_card_cvv')).maskPattern("999");
+        VMasker(document.getElementById('credit_card_month')).maskPattern("99");
+        VMasker(document.getElementById('credit_card_year')).maskPattern("9999");
+        
     });
 
     function parseNomBrl(str) { return parseFloat(str.replace(',', '.')); }

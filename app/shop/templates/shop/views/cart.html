@@ -73,9 +73,12 @@
                     <td>-</td>
                     <td>{{ cart.total_price|brl }}</td>
                     <td>
-                        <a class="thenerdshop waves-effect waves-light btn" title="Confirmar Compra" href="{% url 'shop:user_cart_confirm' %}">
-                            Comprar
-                        </a>
+                        <form action="{% url 'shop:user_cart_confirm' %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="thenerdshop waves-effect waves-light btn" title="Confirmar Compra">
+                                Comprar
+                            </button>
+                        </form>
                     </td>
                 </tr>
             </tbody>

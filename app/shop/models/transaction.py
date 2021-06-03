@@ -4,7 +4,7 @@ import datetime
 from django.db import models
 from django.utils.html import format_html
 
-from .product import Product
+from .product import Product, ProductSize
 from .user import User
 from ..utils.values import brl
 
@@ -38,9 +38,9 @@ class Transaction(models.Model):
         html = '<ul>'
         for item in items:
             if item.product:
-                html += '<li>' + str(item.product.id) + ' - ' + item.product.name + ' - ' + str(item.quantity) + ' x ' + brl(item.amount) + '</li>'
+                html += '<li>' + str(item.product.id) + ' - ' + item.product.name + ' - TAM ' + str(item.size) + ' - ' + str(item.quantity) + ' x ' + brl(item.amount) + '</li>'
             else:
-                html += '<li>Item deletado do estoque - '  + str(item.quantity) + ' x ' + brl(item.amount) + '</li>'
+                html += '<li>Item deletado do estoque - TAM ' + str(item.size) + ' - ' + str(item.quantity) + ' x ' + brl(item.amount) + '</li>'
         html += '</ul>'
         return format_html(html)
     transaction_items.short_description = 'Itens'
@@ -79,7 +79,7 @@ class Transaction(models.Model):
         return 'Desconhecido'
     status.short_description = 'Status'
 
-    def parse_values_from_xml(self, xml, parse_items):
+    def parse_values_from_xml(self, xml, cart):
         tree = ElementTree.fromstring(xml)
         self.date = datetime.datetime.fromisoformat(tree.find('date').text)
         self.code = tree.find('code').text
@@ -111,18 +111,21 @@ class Transaction(models.Model):
         if not_cpf:
             self.sender = User.objects.filter(email = email).first()
         self.save()
-        if parse_items:
-            items = tree.findall('items/item')
-            for item in items:
-                item_id = int(item.find('id').text)
-                quantity = int(item.find('quantity').text)
-                amount = float(item.find('amount').text)
-                trans_item = TransactionItem()
-                trans_item.transaction = self
-                trans_item.product = Product.objects.filter(pk = item_id).first()
-                trans_item.quantity = quantity
-                trans_item.amount = amount
-                trans_item.save()
+        #if parse_items:
+        #items = tree.findall('items/item')
+        cart_items = cart.get_cart_items()
+        for item in cart_items:
+            #item_id = int(item.find('id').text)
+            #quantity = int(item.find('quantity').text)
+            #amount = float(item.find('amount').text)
+            trans_item = TransactionItem()
+            trans_item.transaction = self
+            trans_item.product = item.product
+            trans_item.quantity = item.quantity
+            trans_item.amount = item.product.real_price()
+            trans_item.size = item.size
+            trans_item.save()
+        cart_items.delete()
     
     class Meta:
         verbose_name = 'Pedido'
@@ -130,6 +133,7 @@ class Transaction(models.Model):
 
 class TransactionItem(models.Model):
     transaction = models.ForeignKey(Transaction, verbose_name = 'Transação', on_delete = models.CASCADE)
-    product = models.ForeignKey(Product, verbose_name = 'Product', on_delete = models.DO_NOTHING, blank = True, null = True)
+    product = models.ForeignKey(Product, verbose_name = 'Produto', on_delete = models.DO_NOTHING, blank = True, null = True)
+    size = models.ForeignKey(ProductSize, verbose_name = 'Tamanho', on_delete = models.DO_NOTHING, blank = True, null = True)
     quantity = models.IntegerField('Quantidade')
     amount = models.DecimalField('Valor', decimal_places=2, max_digits=10)
