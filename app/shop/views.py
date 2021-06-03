@@ -219,7 +219,7 @@ def add_to_cart(request):
     
     product_id = request.POST['product_id']
     size = request.POST.get('size', None)
-    quantity = request.POST['quantity']
+    quantity = int(request.POST['quantity'])
     
     prod = Product.objects.filter(pk = product_id).first()
     if prod is None:
