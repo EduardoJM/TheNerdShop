@@ -1,0 +1,76 @@
+body {
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    background: #05040e;
+    color: #FFF;
+}
+
+header {
+    background: #05040e;
+}
+header nav {
+    background: #05040e !important;
+}
+header nav ul li span.badge.new {
+    background-color: #4a148c !important;
+}
+
+#content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#content > svg {
+    width: 90%;
+    max-width: 400px;
+    height: auto;
+    margin-bottom: 50px;
+    fill: #FFF;
+}
+
+#content > .login-box {
+    width: 90%;
+    max-width: 400px;
+    background: #FFF;
+    padding: 20px;
+    border-radius: 20px;
+    margin-bottom: 50px;
+}
+#content > .login-box.sign-up {
+    max-width: 600px;
+}
+
+#content > .login-box .submit-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #AAA;
+}
+
+.thenerdshop {
+    background-color: #4a148c !important;
+}
+.thenerdshop-text {
+    color: #4a148c !important;
+}
+
+input[type=text]:focus:not([readonly]),
+input[type=password]:focus:not([readonly]) {
+    border-bottom: 1px solid #4a148c !important;
+    box-shadow: 0 1px 0 0 #4a148c !important;
+}
+input[type=text]:focus:not([readonly]) + label,
+input[type=password]:focus:not([readonly]) + label {
+    color: #4a148c !important;
+}

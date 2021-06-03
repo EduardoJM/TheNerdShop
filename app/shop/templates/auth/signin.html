@@ -13,33 +13,54 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
 </head>
 <body>
+    <header>
+        {% include 'shop/includes/navbar.html' %}
+    </header>
 
-    <div class="container">
-        {% for message in messages %}
-            <p>{{ message }}</p>
-        {% endfor %}
+    {% include 'shop/includes/sidebar.html' %}
 
-        <form method="POST" action="">
-            {% csrf_token %}
-            
-            <div class="row">
-                <div class="input-field col s12">
-                    <input name="username" id="username" type="text" class="validate" />
-                    <label for="username">Usuário</label>
+    <main id="content">
+        {% include 'shop/includes/logo.svg' %}
+
+        <div class="login-box">
+            <h5 class="center black-text">Entrar</h5>
+
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+
+            <form method="POST" action="">
+                {% csrf_token %}
+                
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input name="username" id="username" type="text" class="validate" />
+                        <label for="username">Usuário</label>
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="input-field col s12">
-                    <input name="password" id="password" type="password" class="validate" />
-                    <label for="password">Senha</label>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input name="password" id="password" type="password" class="validate" />
+                        <label for="password">Senha</label>
+                    </div>
                 </div>
-            </div>
 
-            <button class="btn waves-effect waves-light" type="submit">Entrar</button>
-        </form>
-    </div>
+                <div class="submit-row">
+                    <button class="thenerdshop waves-effect waves-light btn" type="submit">Entrar</button>
+                </div>
+            </form>
+            <p class="black-text">
+                Não possui uma conta? <a class="thenerdshop-text" href="{% url 'shop:sign_up' %}">Criar conta.</a>
+            </p>
+        </div>
+    </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            M.Sidenav.init(document.querySelectorAll('.sidenav'), {});
+        });
+    </script>
 </body>
 </html>

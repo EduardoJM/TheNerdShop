@@ -1,4 +1,4 @@
-{% load static %}
+{% load static errors %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,56 +13,101 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
 </head>
 <body>
+    <header>
+        {% include 'shop/includes/navbar.html' %}
+    </header>
 
-    <div class="container">
-        {{ form.errors }}
+    {% include 'shop/includes/sidebar.html' %}
 
-        <form method="POST" action="">
-            {% csrf_token %}
+    <main id="content">
+        {% include 'shop/includes/logo.svg' %}
 
-            <div class="row">
-                <div class="input-field col s6">
-                    <input name="first_name" id="first_name" type="text" class="validate" />
-                    <label for="first_name">Nome</label>
-                </div>
-                <div class="input-field col s6">
-                    <input name="last_name" id="last_name" type="text" class="validate" />
-                    <label for="last_name">Sobrenome</label>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="input-field col s12">
-                    <input name="username" id="username" type="text" class="validate" />
-                    <label for="username">Usuário</label>
-                </div>
-            </div>
+        <div class="login-box sign-up">
+            <h5 class="center black-text">Criar Conta</h5>
 
-            <div class="row">
-                <div class="input-field col s12">
-                    <input name="email" id="email" type="email" class="validate" />
-                    <label for="email">E-mail</label>
-                </div>
-            </div>
+            <form method="POST" action="">
+                {% csrf_token %}
 
-            <div class="row">
-                <div class="input-field col s12">
-                    <input name="password1" id="password1" type="password" class="validate" />
-                    <label for="password1">Senha</label>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input name="first_name" id="first_name" type="text" class="validate" />
+                        <label for="first_name">Nome</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input name="last_name" id="last_name" type="text" class="validate" />
+                        <label for="last_name">Sobrenome</label>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="row">
-                <div class="input-field col s12">
-                    <input name="password2" id="password2" type="password" class="validate" />
-                    <label for="password2">Confirme a Senha</label>
+                
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input name="username" id="username" type="text" class="validate" />
+                        <label for="username">Usuário</label>
+                    </div>
                 </div>
-            </div>
 
-            <button class="btn waves-effect waves-light" type="submit">Registrar</button>
-        </form>
-    </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input name="email" id="email" type="email" class="validate" />
+                        <label for="email">E-mail</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input name="password1" id="password1" type="password" class="validate" />
+                        <label for="password1">Senha</label>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input name="password2" id="password2" type="password" class="validate" />
+                        <label for="password2">Confirme a Senha</label>
+                    </div>
+                </div>
+
+                <div class="submit-row">
+                    <button class="waves-effect waves-light btn thenerdshop" type="submit">Registrar</button>
+                </div>
+
+                <p class="black-text">
+                    Já possui uma conta? <a href="{% url 'shop:sign_in' %}" class="thenerdshop-text">Entrar</a>.
+                </p>
+            </form>
+        </div>
+    </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        function htmlDecode(input){
+            var e = document.createElement('textarea');
+            e.innerHTML = input;
+            // handle case of empty input
+            return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+        }
+        translations = {
+            username: 'Nome de usuário',
+            password1: 'Senha',
+            password2: 'Confirme a Senha',
+        }
+
+        var form_errors = JSON.parse(htmlDecode('{{ form.errors.as_json }}'));
+        document.addEventListener('DOMContentLoaded', function(){
+            M.Sidenav.init(document.querySelectorAll('.sidenav'), {});
+
+            var keys = Object.keys(form_errors);
+            for (var i = 0; i < keys.length; i += 1) {
+                var name = keys[i];
+                if (Object.prototype.hasOwnProperty.call(translations, name)) {
+                    name = translations[name];
+                }
+                for (var j = 0; j < form_errors[keys[i]].length; j += 1) {
+                    error = form_errors[keys[i]][j].message;
+                    M.toast({ html: 'Erro no campo "' + name + '": ' + error });
+                }
+            }
+        });
+    </script>
 </body>
 </html>
