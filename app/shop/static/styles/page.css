@@ -25,6 +25,9 @@ header .logo-wrapper > .container svg {
     fill: #FFF;
 }
 
+#mobile-sidenav span.badge {
+    background-color: #4a148c;
+}
 
 .pagination li a {
     color: #FFF !important;
