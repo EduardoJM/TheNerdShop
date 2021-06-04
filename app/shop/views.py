@@ -281,3 +281,14 @@ def transaction_update(request, code):
 def transaction_notification(request):
     print(request)
     return HttpResponse('oie')
+
+def purchases_list(request, id = None):
+    if not request.user.is_authenticated:
+        return redirect('shop:index')
+    if id is None:
+        context = {
+            'purchases': Transaction.objects.filter(sender = request.user).all()
+        }
+        return render(request, 'shop/views/purchases_list.html', context)
+    else:
+        return HttpResponse('TODO: FAZER AQUI')

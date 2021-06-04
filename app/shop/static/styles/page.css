@@ -30,6 +30,7 @@ header .logo-wrapper > .container svg {
 }
 
 .content-container {
+    margin-bottom: 80px !important;
     flex: 1 0 auto;
 }
 

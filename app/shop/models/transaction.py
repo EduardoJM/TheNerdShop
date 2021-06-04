@@ -127,6 +127,15 @@ class Transaction(models.Model):
             trans_item.save()
         cart_items.delete()
     
+    def get_image(self):
+        item = self.transactionitem_set.all().first()
+        if item is None or item.product is None:
+            return None
+        images = item.product.productimage_set.all()
+        if len(images) <= 0:
+            return None
+        return images[0]
+
     class Meta:
         verbose_name = 'Pedido'
         verbose_name_plural = 'Pedidos'

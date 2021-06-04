@@ -21,4 +21,5 @@ urlpatterns = [
     path('sign-out/', views.sign_out, name = 'sign_out'),
     path('transaction/update/<code>', views.transaction_update, name = 'transaction_update_status'),
     path('transaction/notification', views.transaction_notification, name = 'transaction_notification'),
+    path('purchases/', views.purchases_list, name = 'purchases_list'),
 ] + static('media/', document_root=settings.MEDIA_ROOT)

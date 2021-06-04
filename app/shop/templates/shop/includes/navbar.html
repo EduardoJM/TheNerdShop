@@ -12,6 +12,7 @@
                         </span>
                     </a>
                 </li>
+                <li><a href="{% url 'shop:purchases_list' %}">Minhas Compras</a></li>
                 <li><a href="{% url 'shop:sign_out' %}">Sair</a></li>
             {% else %}
                 <li><a href="{% url 'shop:sign_in' %}">Entrar</a></li>
