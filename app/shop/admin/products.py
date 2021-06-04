@@ -4,7 +4,7 @@ from ..models import Product, ProductSize, ProductImage, Category
 from ..forms.admin_shop import ProductForm
 
 class ProductImageInline(admin.TabularInline):
-    model = Product.images.through
+    model = ProductImage
     extra = 3
 
 class ProductCategoryInline(admin.TabularInline):

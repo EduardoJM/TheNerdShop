@@ -5,26 +5,18 @@ import markdown
 
 from .category import Category
 
-class ProductImage(models.Model):
-    alternative_text = models.CharField(max_length=100)
-    description = models.CharField(max_length=250)
-    image = models.ImageField(upload_to='images/products')
-
-    def __str__(self):
-        return self.alternative_text
-
-    class Meta:
-        verbose_name = 'Imagens de Produtos'
-        verbose_name_plural = 'Imagens de Produtos'
-
 class Product(models.Model):
     name = models.CharField('Nome', max_length=100)
     description = models.TextField('Descrição')
-    images = models.ManyToManyField(ProductImage)
-    categories = models.ManyToManyField(Category)
+    categories = models.ManyToManyField(Category, verbose_name = 'Categorias')
     created_date = models.DateTimeField('Data', default=datetime.now, blank=True)
     price = models.DecimalField('Preço', decimal_places=2, max_digits=8)
     discount_price = models.DecimalField('Preço com Desconto', decimal_places=2, max_digits=8)
+
+    def get_images(self):
+        return self.productimage_set
+
+    images = property(get_images)
 
     def has_various_sizes(self):
         return len(self.get_sizes()) > 1
@@ -56,9 +48,31 @@ class Product(models.Model):
         verbose_name = 'Produto'
         verbose_name_plural = 'Produtos'
 
+try:
+    Product.categories.through._meta.verbose_name = 'Categoria'
+    Product.categories.through._meta.verbose_name_plural = 'Categorias'
+    Product.categories.through.category.field.verbose_name = 'Categoria'
+except:
+    pass
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete = models.CASCADE)
+    image = models.ImageField('Foto', upload_to='images/products')
+
+    def __str__(self):
+        return 'Foto do Produto' + str(self.product)
+
+    class Meta:
+        verbose_name = 'Imagens de Produtos'
+        verbose_name_plural = 'Imagens de Produtos'
+
 class ProductSize(models.Model):
     product = models.ForeignKey(Product, on_delete = models.CASCADE)
-    description = models.CharField(max_length = 100)
+    description = models.CharField('Tamanho', max_length = 100)
 
     def __str__(self):
         return self.description
+
+    class Meta:
+        verbose_name = 'Tamanho do Produto'
+        verbose_name_plural = 'Tamanhos do Produto'
