@@ -9,7 +9,7 @@ class Product(models.Model):
     name = models.CharField('Nome', max_length=100)
     description = models.TextField('Descrição')
     categories = models.ManyToManyField(Category, verbose_name = 'Categorias')
-    created_date = models.DateTimeField('Data', default=datetime.now, blank=True)
+    created_date = models.DateTimeField('Data de Criação', default=datetime.now, blank=True)
     price = models.DecimalField('Preço', decimal_places=2, max_digits=8)
     discount_price = models.DecimalField('Preço com Desconto', decimal_places=2, max_digits=8)
 
