@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.urls.base import reverse
 from django.utils.html import format_html
 
+from ..filters import PaymentStatusFilter
+
 class TransactionAdmin(admin.ModelAdmin):
     list_display = [
         'date',
@@ -9,19 +11,14 @@ class TransactionAdmin(admin.ModelAdmin):
         'status',
         'reference',
         'transaction_items',
-        #'last_event_date',
         'gross_amount',
         'discount_amount',
         'fee_amount',
         'net_amount',
         'extra_amount',
-        #'installment_count',
-        #'sender_name',
-        #'sender_email',
-        #'sender_complete_phone',
-        #'sender_cpf',
         'user_actions',
     ]
+    list_filter = (PaymentStatusFilter, )
 
     def user_actions(self, obj):
         return format_html("""

@@ -53,3 +53,7 @@
     align-items: center;
     justify-content: center;
 }
+
+.pagination-wrapper .pagination {
+    width: auto !important;
+}

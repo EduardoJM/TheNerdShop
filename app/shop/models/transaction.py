@@ -98,7 +98,7 @@ class Transaction(models.Model):
     display_payment_status.short_description = 'Status do Pagamento'
 
     def status(self):
-        self.display_payment_status()
+        return self.display_payment_status()
     status.short_description = 'Status'
 
     def parse_values_from_xml(self, xml, cart):
