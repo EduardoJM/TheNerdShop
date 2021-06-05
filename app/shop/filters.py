@@ -1,4 +1,12 @@
-from django.contrib.admin import SimpleListFilter
+from django.contrib.admin import SimpleListFilter, FieldListFilter
+
+def custom_titled_filter(title):
+    class Wrapper(FieldListFilter):
+        def __new__(cls, *args, **kwargs):
+            instance = FieldListFilter.create(*args, **kwargs)
+            instance.title = title
+            return instance
+    return Wrapper
 
 class PaymentStatusFilter(SimpleListFilter):
     title = 'Status de Pagamento'

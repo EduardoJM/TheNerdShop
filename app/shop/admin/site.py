@@ -9,7 +9,8 @@ from ..data import products as products_data
 material_icons = {
     'Shop': 'shopping_cart',
     'Category': 'label',
-    'Transaction': 'shopping_cart',
+    'Transaction': 'receipt',
+    'TransactionItem': 'shopping_cart',
     'Product': 'shopping_basket',
 }
 

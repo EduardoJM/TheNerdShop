@@ -88,3 +88,9 @@ ul.filter-list, ul.filter-list li{
 .noUi-target.noUi-horizontal .noUi-tooltip {
     background-color: #4a148c !important;
 }
+
+[type="checkbox"]:checked+span:not(.lever):before {
+    border-right-color: #4a148c !important;
+    border-bottom-color: #4a148c !important;
+}
+

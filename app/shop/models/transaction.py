@@ -176,5 +176,12 @@ class TransactionItem(models.Model):
     quantity = models.IntegerField('Quantidade')
     amount = models.DecimalField('Valor', decimal_places=2, max_digits=10)
 
+    def __str__(self):
+        return str(self.product) + ' - ' + str(self.size) + ' - ' + str(self.quantity)
+
     def total_price(self):
         return self.quantity * self.amount
+
+    class Meta:
+        verbose_name = 'Item de Pedido'
+        verbose_name_plural = 'Items de Pedido'

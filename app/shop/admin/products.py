@@ -60,3 +60,9 @@ class CategoryAdmin(admin.ModelAdmin):
         'parent',
         'top_menu',
     ]
+    list_display = ['text', 'the_icon', 'parent', 'top_menu']
+    list_filter = ['parent', 'top_menu']
+    
+    def the_icon(self, obj):
+        return format_html('<img src="%s" alt="Ícone" style="width: 80px; height: auto;" />' % obj.icon.url)
+    the_icon.short_description = 'Ícone'
