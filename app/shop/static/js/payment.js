@@ -67,9 +67,9 @@ var PagSeguro = function(opts) {
             removeEl(document.querySelector('[name="credit_card_month"]'));
             removeEl(document.querySelector('[name="credit_card_year"]'));
             
+            document.getElementById('loading-box').style.display = 'block';
             document.getElementById('payment_form').setAttribute('data-ready', 'true');
             document.getElementById('payment_form').submit();
-            document.getElementById('loading-box').style.display = 'block';
         });
     }
 

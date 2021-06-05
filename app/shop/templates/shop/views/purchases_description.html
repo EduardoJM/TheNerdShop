@@ -1,0 +1,81 @@
+{% extends 'shop/base.html' %}
+{% load static brl %}
+
+{% block title %}Minhas Compras - The Nerd Shop{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'styles/cart.css' %}" />
+{% endblock %}
+
+{% block content %}
+    <div id="payment-box">
+        <h4>Minha Compra: {{ purchase.reference }}</h4>
+
+        <h5>Lista de Produtos</h5>
+
+        <table>
+            <thead>
+                <tr>
+                    <th width="150">Foto</th>
+                    <th>Item</th>
+                    <th>Tamanho</th>
+                    <th>Quantidade</th>
+                    <th>Preço Unitário</th>
+                    <th>Preço Total</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in purchase.products %}
+                    <tr>
+                        <td>
+                            {% with img=item.product.images.all.0 %}
+                                {% if img %}
+                                    <img class="cart-image" src="{% get_media_prefix %}/{{ img.image }}" alt="{{ img.alternative_text }}" />
+                                {% endif %}
+                            {% endwith %}
+                        </td>
+                        <td>
+                            {{ item.product.name }}
+                        </td>
+                        <td>{{ item.product_size }}</td>
+                        <td>
+                            {{ item.quantity }}
+                        </td>
+                        <td>
+                            {{ item.product.real_price|brl }}
+                        </td>
+                        <td>
+                            {{ item.total_price|brl }}
+                        </td>
+                        <td>
+                            <a href="{% url 'shop:product_detail' item.product.id %}" class="orange waves-effect waves-light btn" title="Abrir página do produto">
+                                <i class="material-icons">link</i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td><b>Total</b></td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>{{ purchase.total_itens }}</td>
+                    <td>-</td>
+                    <td>{{ purchase.gross_amount|brl }}</td>
+                    <td>-</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h5>Forma de Pagamento: {{ purchase.display_payment_method }}</h5>
+        <h5>Status do Pagamento: {{ purchase.display_payment_status }}</h5>
+        {% if purchase.display_payment_status == 'Aguardando Pagamento' and purchase.display_payment_method == 'Boleto Bancário' %}
+            <div class="row">
+                <div class="col s12">
+                    <h6>Você pode imprimir o seu boleto clicando no botão abaixo:</h6>
+                    <a href="{{ purchase.payment_link }}" target="_blank" class="btn thenerdshop waves-effect waves-light">Imprimir Boleto</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

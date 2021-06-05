@@ -28,6 +28,7 @@
                     <th>Parcelas</th>
                     <th>Preço Total</th>
                     <th>Status</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -51,6 +52,9 @@
                         </td>
                         <td>
                             {{ item.status }}
+                        </td>
+                        <td>
+                            <a href="{% url 'shop:purchases_description' item.id %}" class="btn thenerdshop waves-effect waves-light">Detalhes</a>
                         </td>
                     </tr>
                 {% endfor %}

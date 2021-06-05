@@ -47,6 +47,13 @@ class Transaction(models.Model):
         return format_html(html)
     transaction_items.short_description = 'Itens'
 
+    def total_itens(self):
+        items = self.transactionitem_set.all()
+        size = 0
+        for item in items:
+            size += item.quantity
+        return size
+
     def get_formated_sender_phone_number(self):
         phone = str(self.sender_phone_number).strip()
         if len(phone) == 9:
@@ -59,7 +66,16 @@ class Transaction(models.Model):
         return '(' + self.sender_phone_code + ') ' + self.get_formated_sender_phone_number()
     sender_complete_phone.short_description = 'Telefone do Comprador'
 
-    def status(self):
+    def display_payment_method(self):
+        if self.payment_method_type == 1:
+            return 'Cartão de Crédito'
+        elif self.payment_method_type == 2:
+            return 'Boleto Bancário'
+        elif self.payment_method_type == 3:
+            return 'Débito em Conta'
+    display_payment_method.short_description = 'Forma de Pagamento'
+
+    def display_payment_status(self):
         if self.transaction_status == 1:
             return 'Aguardando Pagamento'
         elif self.transaction_status == 2:
@@ -79,6 +95,10 @@ class Transaction(models.Model):
         elif self.transaction_status == 9:
             return 'Retenção Temporária'
         return 'Desconhecido'
+    display_payment_status.short_description = 'Status do Pagamento'
+
+    def status(self):
+        self.display_payment_status()
     status.short_description = 'Status'
 
     def parse_values_from_xml(self, xml, cart):
@@ -130,6 +150,11 @@ class Transaction(models.Model):
             trans_item.size = item.size
             trans_item.save()
         cart_items.delete()
+
+    def get_products(self):
+        return self.transactionitem_set.all()
+    
+    products = property(get_products)
     
     def get_image(self):
         item = self.transactionitem_set.all().first()
@@ -150,3 +175,6 @@ class TransactionItem(models.Model):
     size = models.ForeignKey(ProductSize, verbose_name = 'Tamanho', on_delete = models.DO_NOTHING, blank = True, null = True)
     quantity = models.IntegerField('Quantidade')
     amount = models.DecimalField('Valor', decimal_places=2, max_digits=10)
+
+    def total_price(self):
+        return self.quantity * self.amount

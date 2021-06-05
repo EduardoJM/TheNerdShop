@@ -303,4 +303,10 @@ def purchases_list(request, id = None):
         }
         return render(request, 'shop/views/purchases_list.html', context)
     else:
-        return HttpResponse('TODO: FAZER AQUI')
+        transaction = Transaction.objects.filter(pk = id).first()
+        if transaction is None:
+            return redirect('shop:purchases_list')
+        context = {
+            'purchase': transaction
+        }
+        return render(request, 'shop/views/purchases_description.html', context)
