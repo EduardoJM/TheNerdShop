@@ -6,6 +6,24 @@ from django.template.response import TemplateResponse
 from ..models import Product, Category
 from ..data import products as products_data
 
+material_icons = {
+    'Shop': 'shopping_cart',
+    'Category': 'label',
+    'Transaction': 'shopping_cart',
+    'Product': 'shopping_basket',
+}
+
+def update_icons(apps):
+    for app in apps:
+        name = app['name']
+        if name in material_icons:
+            app['icon'] = material_icons[name]
+        for model in app['models']:
+            name = model['object_name']
+            if name in material_icons:
+                model['icon'] = material_icons[name]
+    return apps
+
 class ShopAdminSite(AdminSite):
     site_header = 'TheNerdShop'
     enable_nav_sidebar = True
@@ -13,10 +31,17 @@ class ShopAdminSite(AdminSite):
     def get_urls(self):
         urls = super().get_urls()
         my_urls = [
+            path('data/', self.admin_view(self.view_data_index), name = 'data_index'),
             path('data/products/', self.admin_view(self.view_data_products)),
-            path('data/products/abc/', self.admin_view(self.view_abc_curve)),
+            path('data/abc-curve/', self.admin_view(self.view_abc_curve)),
         ]
         return my_urls + urls
+
+    def view_data_index(self, request):
+        context = dict(
+            **self.each_context(request),
+        )
+        return TemplateResponse(request, 'admin/data/index.html', context)
 
     def view_data_products(self, request):
         products = Product.objects.all()
@@ -59,23 +84,26 @@ class ShopAdminSite(AdminSite):
         return TemplateResponse(request, 'admin/data/abc_curve.html', context)
     
     def get_app_list(self, request):
-        app_list = super().get_app_list(request)
+        app_list = update_icons(super().get_app_list(request))
         app_list += [
             {
                 "name": "Monitoramento de Dados",
                 "app_label": "data_monitoring",
-                # "app_url": "/admin/test_view",
+                "app_url": "admin/data/",
+                "icon": "insert_chart",
                 "models": [
                     {
                         "name": "Produtos",
                         "object_name": "data_products",
                         "admin_url": "/admin/data/products",
+                        "icon": "insert_chart",
                         "view_only": True,
                     },
                     {
                         "name": "Curva ABC",
                         "object_name": "abc_curve",
-                        "admin_url": "/admin/data/products/abc/",
+                        "admin_url": "/admin/data/abc-curve/",
+                        "icon": "show_chart",
                         "view_only": True,
                     }
                 ],

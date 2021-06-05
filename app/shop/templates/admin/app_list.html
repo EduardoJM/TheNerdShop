@@ -1,0 +1,34 @@
+{% load i18n %}
+
+{% if app_list %}
+    {% for app in app_list %}
+        <ul class="collapsible">
+            <li class="active">
+                <div class="collapsible-header">
+                    {% if app.icon %}
+                        <i class="material-icons">{{ app.icon }}</i>
+                    {% else %}
+                        <i class="material-icons">dashboard</i>
+                    {% endif %}
+                    {{ app.name }}
+                </div>
+                <div class="collapsible-body">
+                    <div class="row">
+                        {% for model in app.models %}
+                            <div class="col s4 m3 l2">
+                                <a href="{% if model.admin_url %}{{model.admin_url}}{%else%}#{%endif%}" class="waves-effect waves-purple btn-flat btn-two-rows">
+                                    {% if model.icon %}
+                                        <i class="material-icons">{{ model.icon }}</i>
+                                    {% else %}
+                                        <i class="material-icons">dashboard</i>
+                                    {% endif %}
+                                    {{ model.name }}
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </li>
+        </ul>
+    {% endfor %}
+{% endif %}

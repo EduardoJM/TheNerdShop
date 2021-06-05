@@ -1,25 +1,47 @@
 {% extends "admin/base_site.html" %}
 
+{% load i18n %}
+
 {% block extrastyle %}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@latest/dist/nouislider.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Dogfalo/materialize@latest/extras/noUiSlider/nouislider.css" />
 {% endblock %}
 
+{% block breadcrumbs %}
+    <nav class="purple darken-4 z-depth-0 page-breadcrumb">
+        <div class="nav-wrapper">
+            <div class="col s12">
+                <a class="breadcrumb" href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+                <a class="breadcrumb" href="{% url 'admin:data_index' %}">Monitoramento de Dados</a>
+                <a class="breadcrumb" href="#">Curva ABC</a>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block content_title %}<h4>Curva ABC</h4>{% endblock %}
+
 {% block content %}
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Determine as porcentagens para a curva ABC:</span>
+                    <div style="padding: 20px 0;">
+                        <div id="percents"></div>
+                    </div>
+                    <p>Marcadores em: <span id="markers-label"></span></p>
+                    <div style="padding: 20px 0; text-align: right;">
+                        <button id="update-button" class="btn purple darken-4 waves-effect waves-light">Atualizar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <h4>Determine as porcentagens para a curva ABC:</h4>
-    <div style="padding: 20px 0;">
-        <div id="percents"></div>
-    </div>
-    <div style="padding: 20px 0;">
-        <button id="update-button">Atualizar</button>
-    </div>
-
-    <div style="width: 700px; height: 500px; margin: 0 auto;">
-        <canvas id="abc-curve"></canvas>
-    </div>
+    <canvas id="abc-curve"></canvas>
 
     
-    <script src="https://cdn.jsdelivr.net/npm/nouislider@latest/dist/nouislider.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/Dogfalo/materialize@latest/extras/noUiSlider/nouislider.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function(){
@@ -34,6 +56,7 @@
             var myChart = null;
 
             function createCurveData() {
+                document.getElementById('markers-label').innerHTML = parseInt(percents[0]) + '%, ' + parseInt(percents[1]) + '%, ' + parseInt(percents[2]) + '%;';
                 var a = [], b = [], c = [];
                 var labels = [];
                 for (var i = 0; i < abc_curve_data.length; i += 1) {
@@ -128,7 +151,11 @@
                     'min': 0,
                     'max': 100,
                 },
-                tooltips: [true, true, true],
+                tooltips: [
+                    wNumb({ decimals: 0, suffix: ' %' }),
+                    wNumb({ decimals: 0, suffix: ' %' }),
+                    wNumb({ decimals: 0, suffix: ' %' }),
+                ],
                 step: 1,
             });
             percentsRange.noUiSlider.on('update', function (values, handle) {

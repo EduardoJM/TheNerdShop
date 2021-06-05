@@ -1,5 +1,21 @@
 {% extends "admin/base_site.html" %}
 
+{% load i18n %}
+
+{% block breadcrumbs %}
+    <nav class="purple darken-4 z-depth-0 page-breadcrumb">
+        <div class="nav-wrapper">
+            <div class="col s12">
+                <a class="breadcrumb" href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+                <a class="breadcrumb" href="{% url 'admin:data_index' %}">Monitoramento de Dados</a>
+                <a class="breadcrumb" href="#">Produtos</a>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block content_title %}<h4>Estatísticas sobre Produtos</h4>{% endblock %}
+
 {% block content %}
     
     <h3>Monitoramento de Dados</h3>

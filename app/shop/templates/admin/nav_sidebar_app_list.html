@@ -1,0 +1,31 @@
+{% load i18n %}
+
+{% if app_list %}
+    {% for app in app_list %}
+    <li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+            <li {% if app.app_url in request.path %} class="active"{% endif %}>
+                <a class="collapsible-header">
+                    <i class="material-icons">arrow_drop_down</i>
+                    {{ app.name }}
+                </a>
+                <div class="collapsible-body">
+                    <ul>
+                        {% for model in app.models %}
+                            <li {% if model.admin_url in request.path %} class="active"{% endif %}>
+                                <a href="{% if model.admin_url %}{{ model.admin_url }}{% else %}#{% endif %}">
+                                    {% if model.icon %}
+                                        <i class="material-icons">{{ model.icon }}</i>
+                                    {% endif %}
+                                    {{ model.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </li>
+    {% endfor %}
+{% endif %}
+

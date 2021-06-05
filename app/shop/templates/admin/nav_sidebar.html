@@ -1,0 +1,10 @@
+{% load i18n %}
+<ul id="slide-out" class="sidenav sidenav-fixed">
+    <li>
+        <a href="{% url 'admin:index' %}">
+            <i class="material-icons">home</i>
+            Início
+        </a>
+    </li>
+    {% include 'admin/nav_sidebar_app_list.html' with app_list=available_apps show_changelinks=False %}
+</ul>
