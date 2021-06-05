@@ -12,32 +12,30 @@ var PagSeguro = function(opts) {
 
     function formSubmit(e) {
         if (document.getElementById('payment_form').getAttribute('data-ready') === 'true') {
-            function removeEl(el) { el.parentElement.removeChild(el); }
-            removeEl(document.querySelector('[name=credit_card_num]'));
-            removeEl(document.querySelector('[name=credit_card_brand]'));
-            removeEl(document.querySelector('[name=credit_card_cvv]'));
-            removeEl(document.querySelector('[name=credit_card_month]'));
-            removeEl(document.querySelector('[name=credit_card_year]'));
             return;
         }
         e.preventDefault();
 
-        var creditCardNum = document.getElementById('credit_card_num').value.replaceAll(' ', '');
-        PagSeguroDirectPayment.createCardToken({
-            cardNumber: creditCardNum,
-            brand: document.getElementById('credit_card_brand').value,
-            cvv: document.getElementById('credit_card_cvv').value,
-            expirationMonth: document.getElementById('credit_card_month').value,
-            expirationYear: document.getElementById('credit_card_year').value,
-            success: function(response) {
-                document.getElementById('credit_card_token').value = response.card.token;
-                getSenderHashKey();
-            },
-            error: function(response) {
-            },
-            complete: function(response) {
-            }
-        });
+        if (document.querySelector('input[name=payment-method]:checked').value === 'creditCard') {
+            var creditCardNum = document.getElementById('credit_card_num').value.replaceAll(' ', '');
+            PagSeguroDirectPayment.createCardToken({
+                cardNumber: creditCardNum,
+                brand: document.getElementById('credit_card_brand').value,
+                cvv: document.getElementById('credit_card_cvv').value,
+                expirationMonth: document.getElementById('credit_card_month').value,
+                expirationYear: document.getElementById('credit_card_year').value,
+                success: function(response) {
+                    document.getElementById('credit_card_token').value = response.card.token;
+                    getSenderHashKey();
+                },
+                error: function(response) {
+                },
+                complete: function(response) {
+                }
+            });
+        } else {
+            getSenderHashKey();
+        }
     }
 
     function bindForm() {
@@ -51,32 +49,27 @@ var PagSeguro = function(opts) {
                 return false;
             }
             document.getElementById('user_hash_token').value = response.senderHash;
-            // var form = document.getElementById('payment_form');
-            // var data = serialize(form);
-            var installment = document.querySelector('input[name=installment]:checked');
-            if (!installment) {
-                document.getElementById('error-message').innerHTML = 'Houve um erro desconhecido e não conseguimos encontrar a forma como deseja pagar.';
-                return;
+            
+            if (document.querySelector('input[name=payment-method]:checked').value === 'creditCard') {
+                var installment = document.querySelector('input[name=installment]:checked');
+                if (!installment) {
+                    document.getElementById('error-message').innerHTML = 'Houve um erro desconhecido e não conseguimos encontrar a forma como deseja pagar.';
+                    return;
+                }
+                document.querySelector('[name=installments_quantity]').value = parseInt(installment.getAttribute('data-quantity'));
             }
-            document.querySelector('[name=installments_quantity]').value = parseInt(installment.getAttribute('data-quantity'));
+
+            function removeEl(el) { el.parentElement.removeChild(el); }
+            
+            removeEl(document.querySelector('[name="credit_card_num"]'));
+            removeEl(document.querySelector('[name="credit_card_brand"]'));
+            removeEl(document.querySelector('[name="credit_card_cvv"]'));
+            removeEl(document.querySelector('[name="credit_card_month"]'));
+            removeEl(document.querySelector('[name="credit_card_year"]'));
+            
             document.getElementById('payment_form').setAttribute('data-ready', 'true');
             document.getElementById('payment_form').submit();
-            /*
-            var checkoutData = {
-                senderHash: response.senderHash,
-                creditCardToken: document.getElementById('credit_card_token').value,
-                installmentQuantity: installment.getAttribute('data-quantity'),
-                installmentValue: installment.value,
-            };
-            var req = new XMLHttpRequest();
-            req.onload = function(e) {
-                console.log(req.responseText);
-            }
-            req.open('POST', options.finishUrl);
-            req.setRequestHeader('Content-Type', 'application/json');
-            // console.log(checkoutData);
-            req.send(JSON.stringify(checkoutData));
-            */
+            document.getElementById('loading-box').style.display = 'block';
         });
     }
 
@@ -100,8 +93,10 @@ var PagSeguro = function(opts) {
                     html += '</p></label>';
                 }
                 document.getElementById('installments').innerHTML = html;
+                document.getElementById('installments-row').style.display = 'block';
             },
             error: function(response) {
+                document.getElementById('installments-row').style.display = 'none';
             },
             complete: function(response){
             }

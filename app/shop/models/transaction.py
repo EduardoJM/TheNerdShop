@@ -29,6 +29,8 @@ class Transaction(models.Model):
     sender_phone_number = models.CharField('Telefone Comprador', max_length = 9)
     sender_cpf = models.CharField('CPF Comprador', max_length = 11, blank = True, null = True)
     sender = models.ForeignKey(User, verbose_name = 'Comprador', on_delete = models.DO_NOTHING, blank = True, null = True)
+    
+    payment_link = models.CharField('Link de Pagamento', max_length = 255, blank = True, null = True)
 
     def __str__(self):
         return 'Compra ' + self.reference
@@ -38,7 +40,7 @@ class Transaction(models.Model):
         html = '<ul>'
         for item in items:
             if item.product:
-                html += '<li>' + str(item.product.id) + ' - ' + item.product.name + ' - TAM ' + str(item.size) + ' - ' + str(item.quantity) + ' x ' + brl(item.amount) + '</li>'
+                html += '<li>' + item.product.name + ' - TAM ' + str(item.size) + ' - ' + str(item.quantity) + ' x ' + brl(item.amount) + '</li>'
             else:
                 html += '<li>Item deletado do estoque - TAM ' + str(item.size) + ' - ' + str(item.quantity) + ' x ' + brl(item.amount) + '</li>'
         html += '</ul>'
@@ -110,6 +112,8 @@ class Transaction(models.Model):
                 not_cpf = False
         if not_cpf:
             self.sender = User.objects.filter(email = email).first()
+        if self.payment_method_type == 2:
+            self.payment_link = tree.find('paymentLink').text
         self.save()
         #if parse_items:
         #items = tree.findall('items/item')

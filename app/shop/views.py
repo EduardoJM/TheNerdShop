@@ -11,7 +11,7 @@ from xml.etree import ElementTree
 
 from .forms.auth import UserUpdateForm
 from .models import Product, ProductSize, Category, CartProduct, Transaction, TransactionItem
-from .utils import db
+from .utils import db, reference
 
 from .forms.auth import UserCreationForm
 
@@ -156,38 +156,51 @@ def cart_payment(request):
         
         serialized_items = cart.serialize_cart()
         sender_email = request.user.email if settings.PAGSEGURO_ENV != 'SANDBOX' else 'test_the_nerd_shop@sandbox.pagseguro.com.br'
+        method = request.POST.get('payment-method')
+        if method != 'creditCard' and method != 'boleto':
+            # TODO: render the same page with an error message
+            return HttpResponseServerError()
+        if method == 'creditCard':
+            credit_card_payload = {
+                'creditCardToken': request.POST.get('credit_card_token'),
+                'installmentQuantity': request.POST.get('installments_quantity'),
+                'installmentValue': "%.2f" % float(request.POST.get('installment')),
+                'noInterestInstallmentQuantity': 3,
+                'creditCardHolderName': request.POST.get('credit_card_name'),
+                'creditCardHolderCPF': str(request.POST.get('credit_card_cpf')).replace('-', '').replace('.', ''),
+                'creditCardHolderBirthDate': request.POST.get('credit_card_birth_date'),
+                'creditCardHolderAreaCode': request.POST.get('credit_card_phone_code'),
+                'creditCardHolderPhone': str(request.POST.get('credit_card_phone_number')).replace('-', ''),
+                'billingAddressStreet': request.user.billing_address_street,
+                'billingAddressNumber': request.user.billing_address_number,
+                'billingAddressComplement': request.user.billing_address_complement,
+                'billingAddressDistrict': request.user.billing_address_district,
+                'billingAddressPostalCode': request.user.billing_address_postal_code,
+                'billingAddressCity': request.user.billing_address_city,
+                'billingAddressState': request.user.billing_address_state,
+                'billingAddressCountry': request.user.billing_address_country,
+            }
+        else:
+            credit_card_payload = {}
+        boleto_payload = {}
         payload = {
             'paymentMode': 'default',
-            'paymentMethod': 'creditCard',
+            'paymentMethod': method, # RECEIVE FROM POST
             'receiverEmail': 'eduardo_y05@outlook.com',
             'currency': 'BRL',
             **serialized_items,
-            'reference': 'RF0001',
+            'extraAmount': '0.00',
+            'reference': reference.get_new_ref(),
             'senderName': request.user.first_name + ' ' + request.user.last_name,
             'senderCPF': request.user.cpf,
             'senderAreaCode': request.user.phone_code,
             'senderPhone': request.user.phone_number,
             'senderEmail': sender_email,
             'senderHash': request.POST.get('user_hash_token'),
+            **(credit_card_payload if method == 'creditCard' else {}),
+            **(boleto_payload if method == 'boleto' else {}),
             # TODO: change the below settings if shipping used
             'shippingAddressRequired': False,
-            'creditCardToken': request.POST.get('credit_card_token'),
-            'installmentQuantity': request.POST.get('installments_quantity'),
-            'installmentValue': "%.2f" % float(request.POST.get('installment')),
-            'noInterestInstallmentQuantity': 3,
-            'creditCardHolderName': request.POST.get('credit_card_name'),
-            'creditCardHolderCPF': str(request.POST.get('credit_card_cpf')).replace('-', '').replace('.', ''),
-            'creditCardHolderBirthDate': request.POST.get('credit_card_birth_date'),
-            'creditCardHolderAreaCode': request.POST.get('credit_card_phone_code'),
-            'creditCardHolderPhone': str(request.POST.get('credit_card_phone_number')).replace('-', ''),
-            'billingAddressStreet': request.user.billing_address_street,
-            'billingAddressNumber': request.user.billing_address_number,
-            'billingAddressComplement': request.user.billing_address_complement,
-            'billingAddressDistrict': request.user.billing_address_district,
-            'billingAddressPostalCode': request.user.billing_address_postal_code,
-            'billingAddressCity': request.user.billing_address_city,
-            'billingAddressState': request.user.billing_address_state,
-            'billingAddressCountry': request.user.billing_address_country,
             # TODO: change this to use the webhooks for notification
             'notificationURL': 'http://localhost:8000/shop/transaction/notification',
         }
@@ -199,10 +212,9 @@ def cart_payment(request):
             transaction = Transaction()
             transaction.parse_values_from_xml(response.text, cart)
             return redirect('shop:index')
-            #return HttpResponse(response.text, content_type="application/xml charset=utf-8")
         print (response.text)
+        # TODO: render the same page with an error message
         return HttpResponseServerError()
-        #return HttpResponse(json.dumps(payload), content_type="application/javascript; charset=utf-8")
 
     items = cart.get_cart_items()
     context = {
@@ -287,7 +299,7 @@ def purchases_list(request, id = None):
         return redirect('shop:index')
     if id is None:
         context = {
-            'purchases': Transaction.objects.filter(sender = request.user).all()
+            'purchases': Transaction.objects.filter(sender = request.user).all().order_by('-date')
         }
         return render(request, 'shop/views/purchases_list.html', context)
     else:

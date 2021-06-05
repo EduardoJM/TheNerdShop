@@ -14,8 +14,8 @@
 }
 
 
-#payment-methods #credit-card,
-#payment-methods #boleto {
+#credit-card,
+#boleto {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -23,7 +23,7 @@
     flex-wrap: wrap;
 }
 
-#payment-methods .payment-method-brand {
+.payment-method-brand {
     /*
     width: 120px;
     height: 100px;
@@ -39,11 +39,15 @@
     justify-content: center;
 }
 
-#payment-methods .payment-method-brand span {
+.payment-method-brand span {
     display: none;
 }
 
-
+#payment-box [type="radio"]:checked + span::after,
+#payment-box [type="radio"].with-gap:checked + span::after {
+    background-color: #4a148c !important;
+    border-color: #4a148c !important;
+}
 
 
 

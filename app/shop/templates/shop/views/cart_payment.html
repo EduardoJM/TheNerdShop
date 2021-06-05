@@ -52,20 +52,20 @@
         </tbody>
     </table>
 
-    <h4>Métodos de Pagamentos</h4>
-    <div id="payment-methods">
-        <h5>Cartões de Crédito</h5>
-        <div id="credit-card"></div>
-        <h5>Boleto Bancário</h5>
-        <div id="boleto"></div>
-    </div>
-
     <div id="error-message"></div>
 
     <form method="POST" id="payment_form" action="">
         {% csrf_token %}
 
-        <div class="row">
+        <p>
+            <label>
+                <input id="radio_credit_card" value="creditCard" name="payment-method" type="radio" data-toggle-item="credit_card_row" checked />
+                <span>Cartão de Crédito</span>
+            </label>
+        </p>
+
+        <div class="row" id="credit_card_row">
+            <div class="col s12" id="credit-card"></div>
             <div class="input-field col s12 m6">
                 <input type="text" name="credit_card_name" id="credit_card_name" maxlength="100" />
                 <label for="credit_card_name">Nome Impresso no Cartão</label>
@@ -106,9 +106,9 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" id="installments-row" style="display: none;">
             <div class="col s12">
-                <h5>Opções</h5>
+                <h5>Parcelamento</h5>
                 <div id="installments"></div>
                 <input type="hidden" name="installments_quantity" />
             </div>
@@ -116,6 +116,18 @@
 
         <input type="hidden" name="credit_card_token" id="credit_card_token" />
         <input type="hidden" name="user_hash_token" id="user_hash_token" />
+
+        <p>
+            <label>
+                <input id="radio_boleto_bancario" name="payment-method" value="boleto" type="radio" data-toggle-item="boleto_bancario_row" />
+                <span>Boleto Bancário</span>
+            </label>
+        </p>
+
+        <div class="row" id="boleto_bancario_row" style="display: none;">
+            <div class="col s12" id="boleto"></div>
+
+        </div>
 
         <button class="btn thenerdshop waves-effect waves-light" type="submit">Finalizar Compra</button>
     </form>
@@ -141,6 +153,13 @@
         VMasker(document.getElementById('credit_card_month')).maskPattern("99");
         VMasker(document.getElementById('credit_card_year')).maskPattern("9999");
         
+        function radioChange(e) {
+            document.getElementById('credit_card_row').style.display = 'none';
+            document.getElementById('boleto_bancario_row').style.display = 'none';
+            document.getElementById(e.target.getAttribute('data-toggle-item')).style.display = 'block';
+        }
+        document.getElementById('radio_boleto_bancario').addEventListener('change', radioChange);
+        document.getElementById('radio_credit_card').addEventListener('change', radioChange);
     });
 
     function parseNomBrl(str) { return parseFloat(str.replace(',', '.')); }
