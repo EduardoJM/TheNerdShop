@@ -4,6 +4,7 @@ from django.urls import path
 from django.template.response import TemplateResponse
 
 from ..models import Product, Category
+from ..data import products as products_data
 
 class ShopAdminSite(AdminSite):
     site_header = 'TheNerdShop'
@@ -12,7 +13,8 @@ class ShopAdminSite(AdminSite):
     def get_urls(self):
         urls = super().get_urls()
         my_urls = [
-            path('data/products/', self.admin_view(self.view_data_products))
+            path('data/products/', self.admin_view(self.view_data_products)),
+            path('data/products/abc/', self.admin_view(self.view_abc_curve)),
         ]
         return my_urls + urls
 
@@ -48,6 +50,13 @@ class ShopAdminSite(AdminSite):
             products_by_categories = json.dumps(products_by_categories),
         )
         return TemplateResponse(request, 'admin/data/data_products.html', context)
+
+    def view_abc_curve(self, request):
+        context = dict(
+            **self.each_context(request),
+            abc_data = json.dumps(products_data.get_products_purchase_quantity_price())
+        )
+        return TemplateResponse(request, 'admin/data/abc_curve.html', context)
     
     def get_app_list(self, request):
         app_list = super().get_app_list(request)
@@ -61,6 +70,12 @@ class ShopAdminSite(AdminSite):
                         "name": "Produtos",
                         "object_name": "data_products",
                         "admin_url": "/admin/data/products",
+                        "view_only": True,
+                    },
+                    {
+                        "name": "Curva ABC",
+                        "object_name": "abc_curve",
+                        "admin_url": "/admin/data/products/abc/",
                         "view_only": True,
                     }
                 ],

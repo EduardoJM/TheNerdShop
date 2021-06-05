@@ -1,0 +1,145 @@
+{% extends "admin/base_site.html" %}
+
+{% block extrastyle %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@latest/dist/nouislider.css" />
+{% endblock %}
+
+{% block content %}
+
+    <h4>Determine as porcentagens para a curva ABC:</h4>
+    <div style="padding: 20px 0;">
+        <div id="percents"></div>
+    </div>
+    <div style="padding: 20px 0;">
+        <button id="update-button">Atualizar</button>
+    </div>
+
+    <div style="width: 700px; height: 500px; margin: 0 auto;">
+        <canvas id="abc-curve"></canvas>
+    </div>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/nouislider@latest/dist/nouislider.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            function htmlDecode(input){
+                var e = document.createElement('textarea');
+                e.innerHTML = input;
+                return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+            }
+            var abc_curve_data = JSON.parse(htmlDecode('{{ abc_data }}'));
+            var percents = [75, 95, 100];
+            var context = document.getElementById('abc-curve').getContext('2d');
+            var myChart = null;
+
+            function createCurveData() {
+                var a = [], b = [], c = [];
+                var labels = [];
+                for (var i = 0; i < abc_curve_data.length; i += 1) {
+                    labels.push(abc_curve_data[i].product);
+                    if (abc_curve_data[i].accumulated_percent <= percents[0] / 100) {
+                        abc_curve_data[i].class = 'A';
+                        a.push(abc_curve_data[i].accumulated_percent);
+                    } else if (abc_curve_data[i].accumulated_percent <= percents[1] / 100) {
+                        abc_curve_data[i].class = 'B';
+                        b.push(abc_curve_data[i].accumulated_percent);
+                    } else {
+                        abc_curve_data[i].class = 'C';
+                        c.push(abc_curve_data[i].accumulated_percent);
+                    }
+                }
+                var b_complete = [];
+                for (var i = 0; i < a.length; i += 1) {
+                    if (i === a.length - 1) {
+                        b_complete.push(a[i]);
+                    } else {
+                        b_complete.push(undefined);
+                    }
+                }
+                for (var i = 0; i < b.length; i += 1) { b_complete.push(b[i]); }
+                var c_complete = [];
+                for (var i = 0; i < a.length; i += 1) { c_complete.push(undefined); }
+                for (var i = 0; i < b.length; i += 1) {
+                    if (i === b.length - 1) {
+                        c_complete.push(b[i]);
+                    } else {
+                        c_complete.push(undefined);
+                    }
+                }
+                for (var i = 0; i < c.length; i += 1) { c_complete.push(c[i]); }
+                var datasets = [
+                    {
+                        label: 'Curva A',
+                        data: a,
+                        borderColor: 'red',
+                        backgroundColor: 'rgba(255, 0, 0, 0.3)',
+                        fill: 'start',
+                        cubicInterpolationMode: 'monotone',
+                    },
+                    {
+                        label: 'Curva B',
+                        data: b_complete,
+                        borderColor: 'blue',
+                        backgroundColor: 'rgba(0, 0, 255, 0.3)',
+                        fill: 'start',
+                        cubicInterpolationMode: 'monotone',
+                    },
+                    {
+                        label: 'Curva C',
+                        data: c_complete,
+                        borderColor: 'green',
+                        backgroundColor: 'rgba(0, 255, 0, 0.3)',
+                        fill: 'start',
+                        cubicInterpolationMode: 'monotone',
+                    }
+                ];
+                var config = {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                    },
+                };
+                if (myChart === null) {
+                    var config = {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: datasets
+                        },
+                        options: {
+                        },
+                    };
+                    myChart = new Chart(context, config);
+                } else {
+                    myChart.data.datasets = datasets;
+                    myChart.update();
+                }
+            }
+
+            var percentsRange = document.getElementById('percents');
+            noUiSlider.create(percentsRange, {
+                start: percents,
+                orientation: 'horizontal',
+                range: {
+                    'min': 0,
+                    'max': 100,
+                },
+                tooltips: [true, true, true],
+                step: 1,
+            });
+            percentsRange.noUiSlider.on('update', function (values, handle) {
+                percents = values;
+            });
+
+            document.getElementById('update-button').addEventListener('click', function(){
+                createCurveData();
+            });
+
+            createCurveData();
+        });
+    </script>
+{% endblock %}
