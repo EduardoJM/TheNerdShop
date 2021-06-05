@@ -44,7 +44,7 @@ class MaterializeSelect(widgets.Select):
         context['widget']['label'] = self.label
         return context
 
-class MaterializeFileInput(widgets.FileInput):
+class MaterializeFileInput(widgets.ClearableFileInput):
     template_name = 'django/forms/widgets/material-file.html'
     label = ''
 

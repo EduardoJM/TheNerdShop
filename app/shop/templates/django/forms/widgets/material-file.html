@@ -3,5 +3,21 @@
     {% include "django/forms/widgets/input.html" %}
 </div>
 <div class="file-path-wrapper">
-    <input class="file-path validate" type="text">
+    <input class="file-path validate" type="text" />
 </div>
+{% if widget.is_initial %}
+    <div class="row">
+        <div class="col s12">
+            {{ widget.initial_text }}:<br/>
+            <img class="materialboxed" src="{{ widget.value.url }}" style="max-width: 200px;" />
+        </div>
+    </div>
+    {% if not widget.required %}
+        <div class="col s12">
+            <label>
+                <input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}"{% if widget.attrs.disabled %} disabled{% endif %} />
+                <span>{{ widget.clear_checkbox_label }}</span>
+            </label>
+        </div>
+    {% endif %}
+{% endif %}
