@@ -32,8 +32,8 @@ class ShopAdminSite(AdminSite):
         urls = super().get_urls()
         my_urls = [
             path('data/', self.admin_view(self.view_data_index), name = 'data_index'),
-            path('data/products/', self.admin_view(self.view_data_products)),
-            path('data/abc-curve/', self.admin_view(self.view_abc_curve)),
+            path('data/products/', self.admin_view(self.view_data_products), name = 'data_products'),
+            path('data/abc-curve/', self.admin_view(self.view_abc_curve), name = 'data_abc'),
         ]
         return my_urls + urls
 
