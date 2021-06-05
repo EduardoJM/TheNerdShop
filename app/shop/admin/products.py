@@ -3,10 +3,11 @@ from django.utils.html import format_html
 from django.urls.base import reverse
 
 from ..models import Product, ProductSize, ProductImage
-from ..forms.admin_shop import ProductForm
+from ..forms.admin_shop import ProductForm, CategoryForm, ProductImageForm
 from ..utils.values import brl
 
 class ProductImageInline(admin.TabularInline):
+    form = ProductImageForm
     model = ProductImage
     extra = 3
 
@@ -54,6 +55,7 @@ class ProductAdmin(admin.ModelAdmin):
     the_categories.short_description = 'Categorias'
 
 class CategoryAdmin(admin.ModelAdmin):
+    form = CategoryForm
     fields = [
         'text',
         'icon',

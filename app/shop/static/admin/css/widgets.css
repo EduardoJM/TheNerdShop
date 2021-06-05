@@ -554,6 +554,10 @@ ul.timelist, .timelist li {
     display: flex;
     align-items: center;
 }
+.related-widget-wrapper > .select-wrapper {
+    flex: 1;
+    margin-right: 10px;
+}
 
 .related-widget-wrapper-link {
     opacity: 0.3;

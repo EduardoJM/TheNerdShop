@@ -1,0 +1,49 @@
+{% load widget_util %}
+
+<fieldset class="module aligned {{ fieldset.classes }}">
+    {% if fieldset.name %}<h2>{{ fieldset.name }}</h2>{% endif %}
+    {% if fieldset.description %}
+        <div class="description">{{ fieldset.description|safe }}</div>
+    {% endif %}
+    <div class="row">
+        {% for line in fieldset %}
+            {% if line.fields|length_is:'1' %}
+                {% if line.errors %}
+                    <div class="col s12">
+                        {{ line.errors }}
+                    </div>
+                {% endif %}
+            {% endif %}
+            <div class="col s12 form-row{% if line.fields|length_is:'1' and line.errors %} errors{% endif %}{% if not line.has_visible_field %} hidden{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% endfor %}">
+                {% for field in line %}
+                    <div class="row">
+                        {% if not line.fields|length_is:'1' and not field.is_readonly %}
+                            <div class="col s12">
+                                {{ field.errors }}
+                            </div>
+                        {% endif %}
+                        {% with field.field|widget_type as widget_type %}
+                            <div class="input-field col s12 {% if widget_type == 'materializefileinput' %}file-field{% endif %}">
+                                {% if widget_type in 'materializecheckbox materializeselect materializefileinput' %}
+                                    {{ field.field }}
+                                {% elif field.is_checkbox %}
+                                    {{ field.field }}{{ field.label_tag }}
+                                {% else %}
+                                    {{ field.label_tag }}
+                                    {% if field.is_readonly %}
+                                        <div class="readonly">{{ field.contents }}</div>
+                                    {% else %}
+                                        {{ field.field }}
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        {% endwith %}
+                        {% if field.field.help_text %}
+                            <div class="col s12">{{ field.field.help_text|safe }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</fieldset>

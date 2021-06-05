@@ -38,11 +38,11 @@
 {% block content %}<div id="content-main">
 {% block object-tools %}
 {% if change %}{% if not is_popup %}
-  <ul class="object-tools">
+  <div class="object-tools">
     {% block object-tools-items %}
       {% change_form_object_tools %}
     {% endblock %}
-  </ul>
+  </div>
 {% endif %}{% endif %}
 {% endblock %}
 <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}{% if form_url %}action="{{ form_url }}" {% endif %}method="post" id="{{ opts.model_name }}_form" novalidate>{% csrf_token %}{% block form_top %}{% endblock %}
@@ -71,8 +71,8 @@
 {% endfor %}
 {% endblock %}
 
+{% block content-area-size-class %}{% endblock %}
 {% block after_related_objects %}{% endblock %}
-
 {% block submit_buttons_bottom %}{% submit_row %}{% endblock %}
 
 {% block admin_change_form_document_ready %}

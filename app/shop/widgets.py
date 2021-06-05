@@ -1,6 +1,6 @@
-from django.forms.widgets import Textarea
+from django.forms import widgets
 
-class MarkdownTextArea(Textarea):
+class MarkdownTextArea(widgets.Textarea):
     class Media:
         css = {
             'all': [
@@ -17,3 +17,43 @@ class MarkdownTextArea(Textarea):
         context = super().get_context(name, value, attrs)
         context['widget']['attrs']['class'] = 'markdown-editor'
         return context
+
+class MaterializeCheckBox(widgets.CheckboxInput):
+    template_name = 'django/forms/widgets/material-checkbox.html'
+    label = ''
+
+    def __init__(self, label, attrs = None):
+        self.label = label
+        super().__init__(attrs)
+
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context['widget']['label'] = self.label
+        return context
+
+class MaterializeSelect(widgets.Select):
+    template_name = 'django/forms/widgets/material-select.html'
+    label = ''
+
+    def __init__(self, label, attrs = None):
+        self.label = label
+        super().__init__(attrs)
+
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context['widget']['label'] = self.label
+        return context
+
+class MaterializeFileInput(widgets.FileInput):
+    template_name = 'django/forms/widgets/material-file.html'
+    label = ''
+
+    def __init__(self, label, attrs = None):
+        self.label = label
+        super().__init__(attrs)
+
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context['widget']['label'] = self.label
+        return context
+

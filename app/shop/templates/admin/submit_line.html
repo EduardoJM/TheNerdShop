@@ -1,0 +1,34 @@
+{% load i18n admin_urls %}
+
+<div class="submit-row">
+    {% block submit-row %}
+        {% if show_delete_link and original %}
+            {% url opts|admin_urlname:'delete' original.pk|admin_urlquote as delete_url %}
+            <a href="{% add_preserved_filters delete_url %}" class="deletelink btn red darken-4 waves-effect waves-light">
+                <i class="material-icons left">delete</i>
+                {% translate "Delete" %}
+            </a>
+        {% endif %}
+
+        <div style="flex: 1"></div>
+
+        {% if show_save %}
+            <button type="submit" class="btn purple darken-4 waves-effect waves-light" name="_save">
+                <i class="material-icons left">save</i>
+                {% translate 'Save' %}
+            </button>
+        {% endif %}
+        {% if show_save_and_add_another %}
+            <button type="submit" class="btn purple darken-4 waves-effect waves-light" name="_addanother">
+                <i class="material-icons left">save</i>
+                {% translate 'Save and add another' %}
+            </button>
+        {% endif %}
+        {% if show_save_and_continue %}
+            <button type="submit" name="_continue" class="btn purple darken-4 waves-effect waves-light">
+                <i class="material-icons left">save</i>
+                {% if can_change %}{% translate 'Save and continue editing' %}{% else %}{% translate 'Save and view' %}{% endif %}
+            </button>
+        {% endif %}
+    {% endblock %}
+</div>
