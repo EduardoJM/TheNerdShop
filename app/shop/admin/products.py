@@ -4,6 +4,7 @@ from django.urls.base import reverse
 
 from ..models import Product, ProductSize, ProductImage
 from ..forms.admin_shop import ProductForm, CategoryForm, ProductImageForm
+from ..forms.action import ActionForm
 from ..utils.values import brl
 
 class ProductImageInline(admin.TabularInline):
@@ -18,6 +19,7 @@ class ProductSizeInline(admin.TabularInline):
     model = ProductSize
 
 class ProductAdmin(admin.ModelAdmin):
+    action_form = ActionForm
     form = ProductForm
     fields = [
         'name',
@@ -55,6 +57,7 @@ class ProductAdmin(admin.ModelAdmin):
     the_categories.short_description = 'Categorias'
 
 class CategoryAdmin(admin.ModelAdmin):
+    action_form = ActionForm
     form = CategoryForm
     fields = [
         'text',

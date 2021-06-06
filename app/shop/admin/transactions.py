@@ -2,9 +2,11 @@ from django.contrib import admin
 from django.urls.base import reverse
 from django.utils.html import format_html
 
+from ..forms.action import ActionForm
 from ..filters import PaymentStatusFilter, custom_titled_filter
 
 class TransactionItemAdmin(admin.ModelAdmin):
+    action_form = ActionForm
     list_display = ['product', 'quantity']
     list_filter = (
         ('transaction__id', custom_titled_filter('ID da Transação')),
@@ -20,6 +22,7 @@ class TransactionItemAdmin(admin.ModelAdmin):
         return False
 
 class TransactionAdmin(admin.ModelAdmin):
+    action_form = ActionForm
     list_display = [
         'date',
         'reference',

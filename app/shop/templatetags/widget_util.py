@@ -12,3 +12,7 @@ def widget_type(field):
     except:
         widget_type = field.field.widget.__class__.__name__.lower()
     return widget_type
+
+@register.filter()
+def c_type(field):
+    return type(field)

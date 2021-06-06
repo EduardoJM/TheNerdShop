@@ -1,9 +1,17 @@
-{% load i18n %}
+{% load i18n widget_util %}
 
 <div class="actions">
     {% block actions %}
         {% block actions-form %}
-            {% for field in action_form %}{% if field.label %}<label>{{ field.label }} {% endif %}{{ field }}{% if field.label %}</label>{% endif %}{% endfor %}
+            {% for field in action_form %}
+                {% if field.label %}
+                    <label>{{ field.label }}
+                {% endif %}
+                    {{ field }}
+                {% if field.label %}
+                    </label>
+                {% endif %}
+            {% endfor %}
         {% endblock %}
         {% block actions-submit %}
             <button type="submit" class="btn purple darken-4" title="{% translate "Run the selected action" %}" name="index" value="{{ action_index|default:0 }}">{% translate "Go" %}</button>
