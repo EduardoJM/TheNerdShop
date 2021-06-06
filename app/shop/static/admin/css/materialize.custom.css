@@ -12,7 +12,7 @@ header, main, footer {
     padding: 0 20px;
 }
 
-main {
+main.push-top {
     margin-top: -200px;
 }
 

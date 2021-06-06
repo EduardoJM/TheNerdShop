@@ -4,9 +4,11 @@
     <div class="slider">
         <ul class="slides">
             {% for img in item.images.all %}
-                <li>
-                    <img src="{% get_media_prefix %}/{{ img.image }}" alt="{{ img.alternative_text }}" />
-                </li>
+                {% if forloop.counter <= 5 %}
+                    <li>
+                        <img src="{% get_media_prefix %}/{{ img.image }}" alt="{{ img.alternative_text }}" />
+                    </li>
+                {% endif %}
             {% empty %}
                 <li>
                     <img src="" alt="CORRIGIR ISSO" />
