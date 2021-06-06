@@ -34,6 +34,7 @@ class ProductAdmin(admin.ModelAdmin):
         ProductCategoryInline
     ]
     list_display = ['the_image', 'name', 'created_date', 'the_price', 'the_categories']
+    list_filter = ['categories']
 
     def the_image(self, obj):
         img = obj.productimage_set.first()
@@ -52,7 +53,7 @@ class ProductAdmin(admin.ModelAdmin):
                 reverse('admin:shop_category_change', args=[cat.id]),
                 str(cat)
             )
-            html = html + cat_html if html != '' else cat_html
+            html = html + ', ' + cat_html if html != '' else cat_html
         return format_html(html)
     the_categories.short_description = 'Categorias'
 

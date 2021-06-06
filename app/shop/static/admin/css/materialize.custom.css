@@ -95,7 +95,10 @@ ul.filter-list, ul.filter-list li{
 }
 
 
-
-.input-field.imageuploaderwidget label {
+.form-row .row, .form-row .row .input-field {
+    margin-bottom: 0;
+}
+.input-field.imageuploaderwidget label,
+.input-field.adminreadonlyfield label {
     position: unset;
 }

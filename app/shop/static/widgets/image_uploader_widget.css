@@ -29,6 +29,9 @@ body {
 .iuw-inline-root {
     border-color: transparent
 }
+.iuw-root {
+    margin-bottom: 30px;
+}
 
 .iuw-inline-root > div {
     height: 100%;
