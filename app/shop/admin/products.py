@@ -2,15 +2,15 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.urls.base import reverse
 
+from image_uploader_widget.admin import ImageUploaderInline
+
 from ..models import Product, ProductSize, ProductImage
-from ..forms.admin_shop import ProductForm, CategoryForm, ProductImageForm
+from ..forms.admin_shop import ProductForm, CategoryForm
 from ..forms.action import ActionForm
 from ..utils.values import brl
 
-class ProductImageInline(admin.TabularInline):
-    form = ProductImageForm
+class ProductImageInline(ImageUploaderInline):
     model = ProductImage
-    extra = 3
 
 class ProductCategoryInline(admin.TabularInline):
     model = Product.categories.through

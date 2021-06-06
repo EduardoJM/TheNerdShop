@@ -94,3 +94,8 @@ ul.filter-list, ul.filter-list li{
     border-bottom-color: #4a148c !important;
 }
 
+
+
+.input-field.imageuploaderwidget label {
+    position: unset;
+}

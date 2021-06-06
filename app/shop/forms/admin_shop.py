@@ -1,12 +1,6 @@
 from django import forms
+from image_uploader_widget import widgets as uploader_widgets
 from .. import widgets as localWidgets
-
-class ProductImageForm(forms.ModelForm):
-    class Meta:
-        widgets = {
-            'image': localWidgets.MaterializeFileInput('Foto'),
-        }
-        fields = '__all__'
 
 class ProductForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -28,6 +22,6 @@ class CategoryForm(forms.ModelForm):
         widgets = {
             'top_menu': localWidgets.MaterializeCheckBox('Exibir no Menu Superior?'),
             'parent': localWidgets.MaterializeSelect('Categoria Superior'),
-            'icon': localWidgets.MaterializeFileInput('Icone'),
+            'icon': uploader_widgets.ImageUploaderWidget('Clique para selecionar uma imagem'),
         }
         fields = '__all__'
