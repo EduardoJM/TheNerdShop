@@ -1,5 +1,10 @@
 {% load i18n %}
 <ul id="slide-out" class="sidenav sidenav-fixed">
+    <li class="logo">
+        <a class="brand-logo" href="{% url 'admin:index' %}">
+            {% include 'shop/includes/logo.svg' %}
+        </a>
+    </li>
     <li>
         <a href="{% url 'admin:index' %}">
             <i class="material-icons">home</i>

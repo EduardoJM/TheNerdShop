@@ -107,7 +107,20 @@ ul.filter-list, ul.filter-list li{
 
 
 
-
+.sidenav li.logo {
+    height: 100px;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.sidenav li.logo .brand-logo {
+    flex: 1;
+}
+.sidenav li.logo .brand-logo svg {
+    width: 100%;
+    height: auto;
+}
 
 /*
  * Custom Materialize Colors
