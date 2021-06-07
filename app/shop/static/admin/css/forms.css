@@ -50,9 +50,6 @@ form div.help ul {
     margin-left: 0;
 }
 
-.colM fieldset.wide .vLargeTextField, .colM fieldset.wide .vXMLLargeTextField {
-    width: 450px;
-}
 
 /* COLLAPSED FIELDSETS */
 
@@ -137,7 +134,7 @@ body.popup .submit-row {
     width: 30em;
 }
 
-.vLargeTextField, .vXMLLargeTextField {
+.vXMLLargeTextField {
     width: 48em;
 }
 
@@ -305,14 +302,15 @@ body.popup .submit-row {
     background-image: url(../img/search.svg);
 }
 
-/*
-form .related-widget-wrapper ul {
-    display: inline-block;
-    margin-left: 0;
-    padding-left: 0;
-}
-*/
-
 .clearable-file-input input {
     margin-top: 0;
+}
+
+
+.form-row .wt-select {
+    display: flex;
+    align-items: center;
+}
+.form-row .wt-select select {
+    flex: 1;
 }

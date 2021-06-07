@@ -31,6 +31,12 @@ class MaterializeCheckBox(widgets.CheckboxInput):
         context['widget']['label'] = self.label
         return context
 
+class MaterializeTextArea(widgets.Textarea):
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context['widget']['attrs']['class'] = 'materialize-textarea'
+        return context
+
 class MaterializeSelect(widgets.Select):
     template_name = 'django/forms/widgets/material-select.html'
     label = ''

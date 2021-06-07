@@ -12,6 +12,7 @@ material_icons = {
     'Transaction': 'receipt',
     'TransactionItem': 'shopping_cart',
     'Product': 'shopping_basket',
+    'Notification': 'notifications'
 }
 
 def update_icons(apps):

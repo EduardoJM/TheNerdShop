@@ -54,16 +54,16 @@
   {% for line in fieldset %}
     {% for field in line %}
       {% if field.is_readonly or not field.field.is_hidden %}
-      <td{% if field.field.name %} class="field-{{ field.field.name }}"{% endif %}>
-      {% if field.is_readonly %}
-          <p>{{ field.contents }}</p>
-        {% else %}
-            {% with field.field|widget_type as widget_type %}
-                {{ field.field.errors.as_ul }}
-                {{ field.field }}
-            {% endwith %}
-      {% endif %}
-      </td>
+        {% with field.field|widget_type as widget_type %}
+          <td class="wt-{{ widget_type }} {% if field.field.name %}field-{{ field.field.name }}{% endif %}">
+            {% if field.is_readonly %}
+                <p>{{ field.contents }}</p>
+            {% else %}
+                  {{ field.field.errors.as_ul }}
+                  {{ field.field }}
+            {% endif %}
+          </td>
+        {% endwith %}
       {% endif %}
     {% endfor %}
   {% endfor %}
