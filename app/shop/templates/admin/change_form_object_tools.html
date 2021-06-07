@@ -2,7 +2,7 @@
 
 {% block object-tools-items %}
     {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
-    <a href="{% add_preserved_filters history_url %}" class="historylink btn purple darken-4 waves-effect waves-light">
+    <a href="{% add_preserved_filters history_url %}" class="historylink btn blue darken-4 waves-effect waves-light">
         <i class="material-icons left">history</i>
         {% translate "History" %}
     </a>
