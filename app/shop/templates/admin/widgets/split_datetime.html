@@ -1,0 +1,6 @@
+<div class="card">
+    <div class="card-content">
+        {{ date_label }} {% with widget=widget.subwidgets.0 %}{% include widget.template_name %}{% endwith %}
+        {{ time_label }} {% with widget=widget.subwidgets.1 %}{% include widget.template_name %}{% endwith %}
+    </div>
+</div>

@@ -99,6 +99,7 @@ ul.filter-list, ul.filter-list li{
     margin-bottom: 0;
 }
 .input-field.imageuploaderwidget label,
-.input-field.adminreadonlyfield label {
+.input-field.adminreadonlyfield label,
+.adminsplitdatetime > label {
     position: unset;
 }
