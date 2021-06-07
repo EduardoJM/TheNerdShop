@@ -7,7 +7,7 @@ from ..models import Product, Category
 from ..data import products as products_data
 
 material_icons = {
-    'Shop': 'shopping_cart',
+    'Loja': 'shopping_cart',
     'Category': 'label',
     'Transaction': 'receipt',
     'TransactionItem': 'shopping_cart',

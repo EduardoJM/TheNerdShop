@@ -108,14 +108,12 @@ ul.filter-list, ul.filter-list li{
 
 
 .sidenav li.logo {
-    height: 100px;
-    margin: 20px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: auto;
+    padding: 20px 0;
+    margin: 10px 0;
 }
 .sidenav li.logo .brand-logo {
-    flex: 1;
+    height: auto;
 }
 .sidenav li.logo .brand-logo svg {
     width: 100%;
