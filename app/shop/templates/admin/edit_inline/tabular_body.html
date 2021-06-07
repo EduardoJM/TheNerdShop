@@ -59,15 +59,8 @@
           <p>{{ field.contents }}</p>
         {% else %}
             {% with field.field|widget_type as widget_type %}
-                {% if widget_type == 'materializefileinput' %}
-                    {{ field.field.errors.as_ul }}
-                    <div class="input-field col s12 file-field">
-                        {{ field.field }}
-                    </div>
-                {% else %}
-                    {{ field.field.errors.as_ul }}
-                    {{ field.field }}
-                {% endif %}
+                {{ field.field.errors.as_ul }}
+                {{ field.field }}
             {% endwith %}
       {% endif %}
       </td>

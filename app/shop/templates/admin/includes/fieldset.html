@@ -23,13 +23,8 @@
                             </div>
                         {% endif %}
                         {% with field.field|widget_type as widget_type %}
-                            {% if widget_type == 'materializefileinput' %}
-                                <div class="col s12">
-                                    {{ field.label_tag }}
-                                </div>
-                            {% endif %}
                             <div class="input-field col s12 {{ widget_type }}">
-                                {% if widget_type in 'materializecheckbox materializeselect materializefileinput' %}
+                                {% if widget_type in 'materializecheckbox materializeselect' %}
                                     {{ field.field }}
                                 {% elif field.is_checkbox %}
                                     {{ field.field }}{{ field.label_tag }}

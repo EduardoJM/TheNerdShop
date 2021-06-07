@@ -44,16 +44,18 @@ class MaterializeSelect(widgets.Select):
         context['widget']['label'] = self.label
         return context
 
-class MaterializeFileInput(widgets.ClearableFileInput):
-    template_name = 'django/forms/widgets/material-file.html'
-    label = ''
-
-    def __init__(self, label, attrs = None):
-        self.label = label
-        super().__init__(attrs)
-
+class MoneyInput(widgets.TextInput):
     def get_context(self, name, value, attrs):
         context = super().get_context(name, value, attrs)
-        context['widget']['label'] = self.label
+        context['widget']['attrs']['data-mask-money'] = 'on'
         return context
 
+    def value_from_datadict(self, data, files, name):
+        value = str(super().value_from_datadict(data, files, name))
+        return value.replace(' ', '')
+
+    class Media:
+        js = (
+            'https://unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js',
+            'widgets/common.js',
+        )

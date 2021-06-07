@@ -9,7 +9,9 @@ class ProductForm(forms.ModelForm):
 
     class Meta:
         widgets = {
-            'description': localWidgets.MarkdownTextArea()
+            'description': localWidgets.MarkdownTextArea(),
+            'price': localWidgets.MoneyInput(),
+            'discount_price': localWidgets.MoneyInput(),
         }
         fields = '__all__'
 
