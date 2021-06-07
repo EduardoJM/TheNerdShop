@@ -6,3 +6,4 @@ requests
 markdown
 Babel
 django-image-uploader-widget
+channels

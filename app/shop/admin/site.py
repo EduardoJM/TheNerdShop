@@ -1,6 +1,6 @@
 import json
 from django.contrib.admin import AdminSite
-from django.urls import path
+from django.urls import path, include
 from django.template.response import TemplateResponse
 
 from ..models import Product, Category
@@ -36,6 +36,7 @@ class ShopAdminSite(AdminSite):
             path('data/', self.admin_view(self.view_data_index), name = 'data_index'),
             path('data/products/', self.admin_view(self.view_data_products), name = 'data_products'),
             path('data/abc-curve/', self.admin_view(self.view_abc_curve), name = 'data_abc'),
+            path('crm/', include('crm.urls'))
         ]
         return my_urls + urls
 

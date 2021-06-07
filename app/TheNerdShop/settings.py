@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.forms',
     'image_uploader_widget',
+    'channels',
+    'crm'
 ]
 
 MIDDLEWARE = [
@@ -79,6 +81,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'TheNerdShop.wsgi.application'
+
+ASGI_APPLICATION = "TheNerdShop.asgi.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 
 # Database
