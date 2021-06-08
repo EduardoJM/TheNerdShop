@@ -18,7 +18,7 @@
                 {% endif %}
                 <li>
                     <a href="#!" class="dropdown-trigger" id="notification-dropdown-trigger" data-target="dropdown-notifications">
-                        <i class="material-icons">notifications</i>
+                        <i class="material-icons left">notifications</i>
                     </a>
                 </li>
                 <li><a href="{% url 'shop:sign_out' %}">Sair</a></li>
@@ -35,14 +35,16 @@
         <ul class="notification-list">
             {% with notifications=request.user.get_notifications %}
                 {% for notification in notifications %}
-                    <li class="notification">
+                    <li class="notification" data-pk="{{ notification.pk }}">
                         <!--<img class="notification-icon" src="http://localhost:8000/media/images/icons/tags/book_oKBtwLq.png" />-->
                         <div class="information-box">
                             <div class="notification-title">
-                                {{ notification.title }}
+                                <p>
+                                    {{ notification.title }}
+                                </p>
                                 <span class="notification-delete">Excluir</span>
                             </div>
-                            <p>{{ notification.body }}</p>
+                            <p class="notification-body">{{ notification.body }}</p>
                             <!--
                                 <img class="notification-banner" src="https://www.teclasap.com.br/wp-content/uploads/2014/11/banner.png" />
                             -->

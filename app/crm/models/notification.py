@@ -22,7 +22,7 @@ class Notification(models.Model):
     user = models.ForeignKey(User, verbose_name = 'Usuário', on_delete = models.CASCADE)
     created_at = models.DateTimeField('Criado em', auto_now_add = True)
     icon = models.ImageField('Ícone', upload_to = 'crm/notification/icons', blank = True, null = True)
-    banner = models.ImageField('Ícone', upload_to = 'crm/notification/banners', blank = True, null = True)
+    banner = models.ImageField('Baner', upload_to = 'crm/notification/banners', blank = True, null = True)
 
     def __str__(self):
         return self.title
@@ -30,15 +30,22 @@ class Notification(models.Model):
     def save(self, *args, **kwargs):
         if self.notification_type == 'intern':
             channel_layer = get_channel_layer()
+            data = {
+                'title': self.title,
+                'url': self.url,
+                'body': self.body,
+            }
+            if self.icon:
+                data['icon'] = self.icon.url
+            if self.banner:
+                data['banner'] = self.banner.url
+            if self.pk is not None:
+                data['pk'] = self.pk
             async_to_sync(channel_layer.group_send)(
                 'user_%s' % self.user.id,
                 {
                     'type': 'send_notification',
-                    'data': {
-                        'title': self.title,
-                        'url': self.url,
-                        'body': self.body,
-                    }
+                    'data': data
                 }
             )
         return super(Notification, self).save(*args, **kwargs)
