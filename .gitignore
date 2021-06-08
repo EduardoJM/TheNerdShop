@@ -1,6 +1,8 @@
 *.sqlite3
 __pycache__
-app/shop/migrations
+app/shop/migrations/*
 !app/shop/migrations/__init__.py
+app/crm/migrations/*
+!app/crm/migrations/__init__.py
 *.env
 env

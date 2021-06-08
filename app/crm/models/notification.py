@@ -2,7 +2,7 @@ from asgiref.sync import async_to_sync
 from django.db import models
 from channels.layers import get_channel_layer
 
-from .user import User
+from shop.models import User
 
 #from ..consumers import NotificationsConsumer
 
@@ -21,6 +21,8 @@ class Notification(models.Model):
     email_body = models.TextField('Corpo do E-mail', blank = True, null = True)
     user = models.ForeignKey(User, verbose_name = 'Usuário', on_delete = models.CASCADE)
     created_at = models.DateTimeField('Criado em', auto_now_add = True)
+    icon = models.ImageField('Ícone', upload_to = 'crm/notification/icons', blank = True, null = True)
+    banner = models.ImageField('Ícone', upload_to = 'crm/notification/banners', blank = True, null = True)
 
     def __str__(self):
         return self.title
