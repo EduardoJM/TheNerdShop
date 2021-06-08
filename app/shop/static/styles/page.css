@@ -118,3 +118,59 @@ header .logo-wrapper > .container svg {
 #category-top-menu ul li:hover .dropdown {
     display: block;
 }
+
+
+
+
+.notification-list {
+    width: 400px;
+    max-height: 400px;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+.notification-list .notification {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 10px;
+}
+.notification-list .notification .notification-icon {
+    width: 80px;
+    height: 80px;
+    margin-right: 20px;
+}
+.notification-list .notification .information-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+.notification-list .notification .information-box .notification-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    position: relative;
+}
+.notification-list .notification .information-box .notification-title .notification-delete {
+    font-weight: normal;
+    font-size: 0.8rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #4a148c;
+    border-radius: 2px;
+    color: #FFF;
+    padding: 2px 4px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+.notification-list .notification:hover .information-box .notification-title .notification-delete {
+    opacity: 1;
+}
+.notification-list .notification .information-box .notification-banner {
+    width: 100%;
+}

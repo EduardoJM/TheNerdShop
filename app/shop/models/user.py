@@ -30,3 +30,7 @@ class User(AbstractUser):
     def cart_products_count(self):
         cart = self.get_cart()
         return cart.total_itens()
+
+    def get_notifications(self):
+        print(dir(self.notification_set.all()))
+        return self.notification_set.all().order_by('-created_at')

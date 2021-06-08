@@ -93,6 +93,11 @@
             M.Sidenav.init(document.querySelectorAll('.sidenav'), {});
             M.Slider.init(document.querySelectorAll('.slider'), {});
             M.FormSelect.init(document.querySelectorAll('select'), {});
+            M.Dropdown.init(document.querySelectorAll('#notification-dropdown-trigger'), {
+                alignment: 'right',
+                coverTrigger: false,
+                constrainWidth: false,
+            });
         });
     </script>
 </body>

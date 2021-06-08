@@ -16,6 +16,11 @@
                 {% if request.user.is_staff %}
                     <li><a href="{% url 'admin:index' %}">Administração</a></li>
                 {% endif %}
+                <li>
+                    <a href="#!" class="dropdown-trigger" id="notification-dropdown-trigger" data-target="dropdown-notifications">
+                        <i class="material-icons">notifications</i>
+                    </a>
+                </li>
                 <li><a href="{% url 'shop:sign_out' %}">Sair</a></li>
             {% else %}
                 <li><a href="{% url 'shop:sign_in' %}">Entrar</a></li>
@@ -24,3 +29,27 @@
         </ul>
     </div>
 </nav>
+
+{% if request.user.is_authenticated %}
+    <div class="dropdown-content" id="dropdown-notifications">
+        <ul class="notification-list">
+            {% with notifications=request.user.get_notifications %}
+                {% for notification in notifications %}
+                    <li class="notification">
+                        <!--<img class="notification-icon" src="http://localhost:8000/media/images/icons/tags/book_oKBtwLq.png" />-->
+                        <div class="information-box">
+                            <div class="notification-title">
+                                {{ notification.title }}
+                                <span class="notification-delete">Excluir</span>
+                            </div>
+                            <p>{{ notification.body }}</p>
+                            <!--
+                                <img class="notification-banner" src="https://www.teclasap.com.br/wp-content/uploads/2014/11/banner.png" />
+                            -->
+                        </div>
+                    </li>
+                {% endfor %}
+            {% endwith %}
+        </ul>
+    </div>
+{% endif %}
