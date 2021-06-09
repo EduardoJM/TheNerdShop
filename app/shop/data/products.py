@@ -33,5 +33,5 @@ def get_products_purchase_quantity_price():
         accumulated += data[i]['total_price']
         data[i]['accumulated_price'] = round(accumulated, 2)
     for i in range(0, len(data)):
-        data[i]['accumulated_percent'] = round(data[i]['accumulated_price'] / accumulated, 2)
+        data[i]['accumulated_percent'] = round(0 if accumulated == 0 else data[i]['accumulated_price'] / accumulated, 2)
     return data
