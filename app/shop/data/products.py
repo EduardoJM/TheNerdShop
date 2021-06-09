@@ -1,6 +1,7 @@
 from django.db.models import Q
 
-from ..models import Product, TransactionItem
+from ..models import Product
+from sales.models import TransactionItem
 
 def get_purchase_quantity_price(product):
     items = TransactionItem.objects.filter(

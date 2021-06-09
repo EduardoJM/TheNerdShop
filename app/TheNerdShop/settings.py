@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'django.forms',
     'image_uploader_widget',
     'channels',
-    'crm'
+    'crm',
+    'sales'
 ]
 
 MIDDLEWARE = [

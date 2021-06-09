@@ -1,4 +1,4 @@
-from ..models import Transaction
+from sales.models import Transaction
 
 def get_new_ref(base_code = None):
     if base_code is None:

@@ -2,8 +2,10 @@ from django.contrib import admin
 from django.urls.base import reverse
 from django.utils.html import format_html
 
-from ..forms.action import ActionForm
-from ..filters import PaymentStatusFilter, custom_titled_filter
+from shop.forms.action import ActionForm
+from shop.filters import custom_titled_filter
+
+from ..filters import PaymentStatusFilter
 
 class TransactionItemAdmin(admin.ModelAdmin):
     action_form = ActionForm

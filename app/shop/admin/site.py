@@ -10,6 +10,8 @@ material_icons = {
     'Loja': 'shopping_cart',
     'Category': 'label',
     'Transaction': 'receipt',
+    'Relacionamento': 'question_answer',
+    'Vendas': 'monetization_on',
     'TransactionItem': 'shopping_cart',
     'Product': 'shopping_basket',
     'Notification': 'notifications'

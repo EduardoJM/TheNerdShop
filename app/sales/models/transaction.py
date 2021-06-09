@@ -4,9 +4,8 @@ import datetime
 from django.db import models
 from django.utils.html import format_html
 
-from .product import Product, ProductSize
-from .user import User
-from ..utils.values import brl
+from shop.models import User, Product, ProductSize
+from shop.utils.values import brl
 
 class Transaction(models.Model):
     date = models.DateTimeField('Data')
