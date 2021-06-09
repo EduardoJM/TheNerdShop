@@ -2,7 +2,7 @@ import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 
-from crm.models.notification import Notification
+from .models import Notification
 
 class NotificationsConsumer(WebsocketConsumer):
     def connect(self):
