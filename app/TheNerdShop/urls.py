@@ -21,6 +21,7 @@ from shop.admin import admin_site
 
 urlpatterns = [
     path('payment/', include('payment.urls')),
+    path('sales/', include('sales.urls')),
     path('admin/', admin_site.urls),
     path('', include('shop.urls'))
 ]

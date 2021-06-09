@@ -3,6 +3,8 @@ from sales.models import Transaction
 def get_new_ref(base_code = None):
     if base_code is None:
         transaction = Transaction.objects.all().order_by('-date').first()
+        if not transaction:
+            return 'RF' + str(1).zfill(4)
         ref_num = int(str(transaction.reference).strip().replace('RF', ''))
         ref_num = ref_num + 1
         code = 'RF' + str(ref_num).zfill(4)

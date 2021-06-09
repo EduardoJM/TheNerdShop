@@ -19,7 +19,7 @@ def transaction_update(request, code):
     if response.status_code == 200:
         tree = ElementTree.fromstring(response.text)
         Transaction.objects.filter(code = code).update(transaction_status = int(tree.find('status').text))
-        return redirect('admin:shop_transaction_changelist')
+        return redirect('admin:sales_transaction_changelist')
     
     return HttpResponseServerError()
 

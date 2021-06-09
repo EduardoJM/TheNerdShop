@@ -42,8 +42,8 @@ class TransactionAdmin(admin.ModelAdmin):
             <a class="btn-flat" title="Ver Itens" href="%s?transaction__id=%s"><i class="material-icons">shopping_cart</i></a>
             <a class="btn-flat" title="Imprimir Registro"><i class="material-icons">print</i></a>
             """ % (
-                reverse('shop:transaction_update_status', args=[obj.code]),
-                reverse('admin:shop_transactionitem_changelist'),
+                reverse('sales:transaction_update_status', args=[obj.code]),
+                reverse('admin:sales_transactionitem_changelist'),
                 obj.id,
             ))
     user_actions.short_description = 'Ações'
