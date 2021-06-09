@@ -39,8 +39,8 @@ class Notification(models.Model):
                 data['icon'] = self.icon.url
             if self.banner:
                 data['banner'] = self.banner.url
-            if self.pk is not None:
-                data['pk'] = self.pk
+            super(Notification, self).save(*args, **kwargs)
+            data['pk'] = self.pk
             async_to_sync(channel_layer.group_send)(
                 'user_%s' % self.user.id,
                 {
@@ -48,7 +48,8 @@ class Notification(models.Model):
                     'data': data
                 }
             )
-        return super(Notification, self).save(*args, **kwargs)
+        else:
+            super(Notification, self).save(*args, **kwargs)
 
     @staticmethod
     def send_intern_to_user(user, title, url, body):

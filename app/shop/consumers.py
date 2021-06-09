@@ -2,6 +2,8 @@ import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 
+from crm.models.notification import Notification
+
 class NotificationsConsumer(WebsocketConsumer):
     def connect(self):
         self.user_id = self.scope['url_route']['kwargs']['user_id']
@@ -23,12 +25,8 @@ class NotificationsConsumer(WebsocketConsumer):
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
         data = text_data_json['data']
-        async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name,{
-                "type": 'send_notification',
-                "data": data
-            }
-        )
+        if text_data_json['type'] == 'delete_notification':
+            Notification.objects.filter(pk = data['pk']).delete()
 
     def send_notification(self, notification_data):
         self.send(text_data=json.dumps(notification_data))

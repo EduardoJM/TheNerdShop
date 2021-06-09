@@ -19,6 +19,7 @@
                 <li>
                     <a href="#!" class="dropdown-trigger" id="notification-dropdown-trigger" data-target="dropdown-notifications">
                         <i class="material-icons left">notifications</i>
+                        &nbsp;
                     </a>
                 </li>
                 <li><a href="{% url 'shop:sign_out' %}">Sair</a></li>
@@ -49,6 +50,10 @@
                                 <img class="notification-banner" src="https://www.teclasap.com.br/wp-content/uploads/2014/11/banner.png" />
                             -->
                         </div>
+                    </li>
+                {% empty %}
+                    <li class="notification-empty">
+                        Não há notificações para você!
                     </li>
                 {% endfor %}
             {% endwith %}

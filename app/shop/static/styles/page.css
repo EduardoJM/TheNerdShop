@@ -132,7 +132,8 @@ header .logo-wrapper > .container svg {
     flex-direction: column;
     align-items: stretch;
 }
-.notification-list .notification {
+.notification-list .notification,
+.notification-list .notification-empty {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
