@@ -249,10 +249,11 @@
 }
 
 /* ACTIONS */
-
+/*
 .filtered .actions {
     border-right: none;
 }
+*/
 
 #changelist table tbody tr.selected {
     background-color: var(--selected-row);
@@ -270,6 +271,10 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+#changelist .actions .select-wrapper {
+    margin-left: 10px;
+    flex: 1;
 }
 #changelist .actions button {
     margin: 0 10px;

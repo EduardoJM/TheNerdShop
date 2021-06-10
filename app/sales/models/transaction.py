@@ -53,6 +53,13 @@ class Transaction(models.Model):
             size += item.quantity
         return size
 
+    def total_price(self):
+        items = self.transactionitem_set.all()
+        price = 0
+        for item in items:
+            price += item.total_price()
+        return price
+
     def get_formated_sender_phone_number(self):
         phone = str(self.sender_phone_number).strip()
         if len(phone) == 9:

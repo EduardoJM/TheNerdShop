@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Imprimir Registros - The Nerd Shop</title>
+    <link rel="stylesheet" href="{% static 'actions/print_registry/styles.css' %}" />
+</head>
+<body>
+    
+    <table width="100%" class="header-table">
+        <thead>
+            <tr>
+                <td colspan="4">
+                    <h1>Registro de Vendas</h1>
+                </td>
+                <td colspan="2" class="logo-container">
+                    {% include 'shop/includes/logo.svg' %}
+                </td>
+            </tr>
+            <tr>
+                <th width="16.66%">Qtde Vendas</th>
+                <th width="16.66%">Qtde Itens</th>
+                <th width="16.66%">Valor Total</th>
+                <th width="16.66%">% Paga</th>
+                <th width="16.66%">Valor Pago</th>
+                <th width="16.66%">A Receber</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ registry.count }}</td>
+                <td>{{ total_itens }}</td>
+                <td>{{ total_price }}</td>
+                <td>{{ payed_percent }} %</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    {{ registry }}
+
+</body>
+</html>

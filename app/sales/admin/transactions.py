@@ -1,11 +1,14 @@
 from django.contrib import admin
 from django.urls.base import reverse
 from django.utils.html import format_html
+from django.shortcuts import render
+from django.db.models import Q
 
 from shop.forms.action import ActionForm
 from shop.filters import custom_titled_filter
 
 from ..filters import PaymentStatusFilter
+from ..models import Transaction
 
 class TransactionItemAdmin(admin.ModelAdmin):
     action_form = ActionForm
@@ -59,5 +62,23 @@ class TransactionAdmin(admin.ModelAdmin):
 
     @admin.action(description = 'Imprimir Registros Selecionados')
     def print_registry(self, request, queryset):
-        # TODO: create a print registry function here
-        pass
+        total_len = len(queryset)
+        payed = queryset.filter(transaction_status = 3)
+        payed_len = len(payed)
+        not_payed = queryset.filter(
+            Q(transaction_status = 1) | Q(transaction_status = 2)
+        )
+        not_payed_len = len(not_payed)
+        total_itens = 0
+        total_price = 0
+        for item in queryset:
+            total_itens += item.total_itens()
+            total_price += item.total_price()
+        context = {
+            'registry': queryset,
+            'payed_percent': round((payed_len / total_len) * 100, 2) if total_len != 0 else 0,
+            'total_itens': total_itens,
+            'total_price': total_price,
+        }
+        return render(request, 'actions/print_registry/multiples.html', context)
+        

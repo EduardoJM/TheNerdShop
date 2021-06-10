@@ -1,0 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    padding: 20px;
+}
+
+table.header-table,
+table.header-table tr,
+table.header-table tr td,
+table.header-table tr th {
+    border: 1px solid #222;
+    border-collapse: collapse;
+}
+table.header-table tr td,
+table.header-table tr th {
+    padding: 10px;
+    text-align: left;
+}
+
+table.header-table .logo-container {
+    text-align: center;
+}
+table.header-table svg {
+    width: 300px;
+    height: auto;
+    margin: 0 auto;
+}
