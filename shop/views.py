@@ -201,7 +201,7 @@ def cart_payment(request):
             # TODO: change the below settings if shipping used
             'shippingAddressRequired': False,
             # TODO: change this to use the webhooks for notification
-            'notificationURL': 'http://localhost:8000/shop/transaction/notification',
+            #'notificationURL': 'https://teste.institutoinventare.com.br/notification',
         }
         #print(payload)
         url = PAGSEGURO_BASE_URL + 'transactions?email=' + PAGSEGURO_EMAIL + '&token=' + PAGSEGURO_TOKEN
