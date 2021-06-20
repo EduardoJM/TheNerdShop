@@ -35,6 +35,7 @@ class ProductAdmin(admin.ModelAdmin):
     ]
     list_display = ['the_image', 'name', 'created_date', 'the_price', 'the_categories']
     list_filter = ['categories']
+    search_fields = ['name', 'description']
 
     def the_image(self, obj):
         img = obj.productimage_set.first()

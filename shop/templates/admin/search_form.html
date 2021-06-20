@@ -1,0 +1,27 @@
+{% load i18n static %}
+
+{% if cl.search_fields %}
+    <div class="row">
+        <form class="col s12" id="changelist-search" method="get">
+            <div class="search-row">
+                <div class="input-field">
+                    <input id="searchbar" name="{{ search_var }}" value="{{ cl.query }}" type="text" autofocus />
+                    <label for="searchbar">Termo de Pesquisa...</label>
+                </div>
+                <button class="btn-flat" type="submit">
+                    <i class="material-icons">search</i>
+                </button>
+            </div>
+            {% for pair in cl.params.items %}
+                {% if pair.0 != search_var %}<input type="hidden" name="{{ pair.0 }}" value="{{ pair.1 }}">{% endif %}
+            {% endfor %}
+        </form>
+    </div>
+    {% if show_result_count %}
+        <div class="row">
+            <div class="col s12">
+                {% blocktranslate count counter=cl.result_count %}{{ counter }} result{% plural %}{{ counter }} results{% endblocktranslate %} (<a href="?{% if cl.is_popup %}_popup=1{% endif %}">{% if cl.show_full_result_count %}{% blocktranslate with full_result_count=cl.full_result_count %}{{ full_result_count }} total{% endblocktranslate %}{% else %}{% translate "Show all" %}{% endif %}</a>)
+            </div>
+        </div>
+    {% endif %}
+{% endif %}

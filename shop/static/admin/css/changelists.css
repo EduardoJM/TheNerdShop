@@ -292,3 +292,15 @@
     align-items: center;
     justify-content: flex-start;
 }
+
+
+
+
+.search-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.search-row .input-field {
+    flex: 1;
+}
