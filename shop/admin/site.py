@@ -14,7 +14,8 @@ material_icons = {
     'Vendas': 'monetization_on',
     'TransactionItem': 'shopping_cart',
     'Product': 'shopping_basket',
-    'Notification': 'notifications'
+    'Notification': 'notifications',
+    'User': 'person',
 }
 
 def update_icons(apps):

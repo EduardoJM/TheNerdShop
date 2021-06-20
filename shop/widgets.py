@@ -50,6 +50,21 @@ class MaterializeSelect(widgets.Select):
         context['widget']['label'] = self.label
         return context
 
+class MaterializeSelectMultiple(MaterializeSelect):
+    allow_multiple_selected = True
+
+    def value_from_datadict(self, data, files, name):
+        try:
+            getter = data.getlist
+        except AttributeError:
+            getter = data.get
+        return getter(name)
+
+    def value_omitted_from_data(self, data, files, name):
+        # An unselected <select multiple> doesn't appear in POST data, so it's
+        # never known if the value is actually omitted.
+        return False
+
 class MoneyInput(widgets.TextInput):
     def get_context(self, name, value, attrs):
         context = super().get_context(name, value, attrs)

@@ -1,7 +1,7 @@
 {% load widget_util %}
 
-<fieldset class="module aligned {{ fieldset.classes }}">
-    {% if fieldset.name %}<h2>{{ fieldset.name }}</h2>{% endif %}
+<div style="margin-top: 30px">
+    {% if fieldset.name %}<h4>{{ fieldset.name }}</h4>{% endif %}
     {% if fieldset.description %}
         <div class="description">{{ fieldset.description|safe }}</div>
     {% endif %}
@@ -46,4 +46,4 @@
             </div>
         {% endfor %}
     </div>
-</fieldset>
+</div>
