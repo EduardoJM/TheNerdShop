@@ -16,12 +16,14 @@
             {% endif %}
             <div class="col s12 form-row{% if line.fields|length_is:'1' and line.errors %} errors{% endif %}{% if not line.has_visible_field %} hidden{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% endfor %}">
                 {% for field in line %}
-                    <div class="row">
-                        {% if not line.fields|length_is:'1' and not field.is_readonly %}
+                    {% if not line.fields|length_is:'1' and not field.is_readonly %}
+                        <div class="row">
                             <div class="col s12">
                                 {{ field.errors }}
                             </div>
-                        {% endif %}
+                        </div>
+                    {% endif %}
+                    <div class="row">
                         {% with field.field|widget_type as widget_type %}
                             <div class="input-field col s12 {{ widget_type }}">
                                 {% if widget_type in 'materializecheckbox materializeselect' %}
@@ -38,10 +40,12 @@
                                 {% endif %}
                             </div>
                         {% endwith %}
-                        {% if field.field.help_text %}
-                            <div class="col s12">{{ field.field.help_text|safe }}</div>
-                        {% endif %}
                     </div>
+                    {% if field.field.help_text %}
+                        <div class="row">
+                            <div class="col s12">{{ field.field.help_text|safe }}</div>
+                        </div>
+                    {% endif %}
                 {% endfor %}
             </div>
         {% endfor %}
