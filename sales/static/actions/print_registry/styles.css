@@ -29,3 +29,23 @@ table.header-table svg {
     height: auto;
     margin: 0 auto;
 }
+
+table.products-table,
+table.products-table tr,
+table.products-table tr td,
+table.products-table tr th {
+    margin-top: 50px;
+
+    border: 1px solid #222;
+    border-collapse: collapse;
+}
+table.products-table tr td,
+table.products-table tr th {
+    padding: 10px;
+    text-align: left;
+}
+
+table.products-table ul {
+    list-style-position: inside;
+    list-style-type: square;
+}

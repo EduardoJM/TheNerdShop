@@ -1,4 +1,4 @@
-{% load static %}
+{% load static brl transactions %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,14 +33,47 @@
             <tr>
                 <td>{{ registry.count }}</td>
                 <td>{{ total_itens }}</td>
-                <td>{{ total_price }}</td>
-                <td>{{ payed_percent }} %</td>
-                <td></td>
-                <td></td>
+                <td>{{ total_price|brl }}</td>
+                <td>{{ payed_percent|percent }} %</td>
+                <td>{{ payed_price|brl }}</td>
+                <td>{{ not_payed_price|brl }}</td>
             </tr>
         </tbody>
     </table>
-    {{ registry }}
+
+    <table width="100%" class="products-table">
+        <thead>
+            <tr>
+                <th colspan="10">
+                    <h2 style="text-align: center;">
+                        Pedidos
+                    </h2>
+                </th>
+            </tr>
+            <tr>
+                <th>Referência</th>
+                <th>Código</th>
+                <th>Itens</th>
+                <th>Método</th>
+                <th>Valor</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in registry %}
+                <tr>
+                    <td>{{ item.reference }}</td>
+                    <td>{{ item.code }}</td>
+                    <td>
+                        {{ item|render_itens }}
+                    </td>
+                    <td>{{ item.display_payment_method }}</td>
+                    <td>{{ item.total_price|brl }}</td>
+                    <td>{{ item.status }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
 </body>
 </html>

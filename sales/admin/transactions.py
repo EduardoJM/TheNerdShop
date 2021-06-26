@@ -65,6 +65,9 @@ class TransactionAdmin(admin.ModelAdmin):
         total_len = len(queryset)
         payed = queryset.filter(transaction_status = 3)
         payed_len = len(payed)
+        payed_value = 0
+        for item in payed:
+            payed_value += item.total_price()
         not_payed = queryset.filter(
             Q(transaction_status = 1) | Q(transaction_status = 2)
         )
@@ -76,7 +79,9 @@ class TransactionAdmin(admin.ModelAdmin):
             total_price += item.total_price()
         context = {
             'registry': queryset,
-            'payed_percent': round((payed_len / total_len) * 100, 2) if total_len != 0 else 0,
+            'payed_percent': (payed_len / total_len) * 100 if total_len != 0 else 0,
+            'payed_price': payed_value,
+            'not_payed_price': total_price - payed_value,
             'total_itens': total_itens,
             'total_price': total_price,
         }
