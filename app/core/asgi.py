@@ -5,7 +5,7 @@ from django.core.asgi import get_asgi_application
 
 import crm.routing
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TheNerdShop.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 
 application = ProtocolTypeRouter({
     'http': get_asgi_application(),

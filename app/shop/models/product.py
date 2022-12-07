@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.html import format_html
 from datetime import datetime
-import markdown
+#import markdown
 
 from .category import Category
 
@@ -37,7 +37,8 @@ class Product(models.Model):
         return self.name
 
     def render_description(self):
-        return format_html(markdown.markdown(self.description))
+        return self.description
+        #return format_html(markdown.markdown(self.description))
 
     def real_price(self):
         if self.discount_price > 0:

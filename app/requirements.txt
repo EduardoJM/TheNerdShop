@@ -16,8 +16,6 @@ django-image-uploader-widget==0.0.2
 hyperlink==21.0.0
 idna==2.10
 incremental==21.3.0
-Markdown==3.3.4
-mysqlclient==2.0.3
 Pillow==8.2.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
@@ -32,3 +30,4 @@ Twisted==21.2.0
 txaio==21.2.1
 urllib3==1.26.5
 zope.interface==5.4.0
+psycopg2==2.9.3
