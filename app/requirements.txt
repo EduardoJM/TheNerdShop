@@ -12,11 +12,13 @@ cryptography==3.4.7
 daphne==3.0.2
 Django==3.2.4
 django-environ==0.4.5
-django-image-uploader-widget==0.0.2
+django-image-uploader-widget==0.2.3
+django-quill-editor==0.1.40
 hyperlink==21.0.0
 idna==2.10
 incremental==21.3.0
 Pillow==8.2.0
+psycopg2==2.9.5
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycparser==2.20
@@ -30,4 +32,3 @@ Twisted==21.2.0
 txaio==21.2.1
 urllib3==1.26.5
 zope.interface==5.4.0
-psycopg2==2.9.3

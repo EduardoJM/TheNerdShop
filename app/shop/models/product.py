@@ -1,22 +1,17 @@
 from django.db import models
 from django.utils.html import format_html
 from datetime import datetime
-#import markdown
+from django_quill.fields import QuillField
 
 from .category import Category
 
 class Product(models.Model):
     name = models.CharField('Nome', max_length=100)
-    description = models.TextField('Descrição')
+    description = QuillField('Descrição')
     categories = models.ManyToManyField(Category, verbose_name = 'Categorias')
     created_date = models.DateTimeField('Data de Criação', default=datetime.now, blank=True)
     price = models.DecimalField('Preço', decimal_places=2, max_digits=8)
     discount_price = models.DecimalField('Preço com Desconto', decimal_places=2, max_digits=8)
-
-    def get_images(self):
-        return self.productimage_set
-
-    images = property(get_images)
 
     def has_various_sizes(self):
         return len(self.get_sizes()) > 1
@@ -36,10 +31,6 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-    def render_description(self):
-        return self.description
-        #return format_html(markdown.markdown(self.description))
-
     def real_price(self):
         if self.discount_price > 0:
             return self.discount_price
@@ -57,7 +48,7 @@ except:
     pass
 
 class ProductImage(models.Model):
-    product = models.ForeignKey(Product, on_delete = models.CASCADE)
+    product = models.ForeignKey(Product, related_name="images", on_delete = models.CASCADE)
     image = models.ImageField('Foto', upload_to='images/products')
 
     def __str__(self):

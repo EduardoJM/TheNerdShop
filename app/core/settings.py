@@ -25,8 +25,8 @@ ALLOWED_HOSTS = ['localhost', 'https://sandbox.pagseguro.uol.com.br']
 # Application definition
 
 INSTALLED_APPS = [
-    'shop.apps.ShopConfig',
-    'payment.apps.PaymentConfig',
+    'shop',
+    'payment',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -37,7 +37,10 @@ INSTALLED_APPS = [
     'image_uploader_widget',
     'channels',
     'crm',
-    'sales'
+    'sales',
+
+    # Third Party Apps
+    'django_quill',
 ]
 
 MIDDLEWARE = [
@@ -151,3 +154,27 @@ PAGSEGURO_BASE_URL3 = env('PAGSEGURO_BASE_URL3')
 PAGSEGURO_EMAIL = env('PAGSEGURO_EMAIL')
 PAGSEGURO_TOKEN = env('PAGSEGURO_TOKEN')
 PAGSEGURO_SCRIPT = env('PAGSEGURO_SCRIPT')
+
+
+QUILL_CONFIGS = {
+    'default':{
+        'theme': 'snow',
+        'modules': {
+            'syntax': True,
+            'toolbar': [
+                [
+                    {'header': [1, 2, 3, 4, 5, 6, False]},
+                    {'align': []},
+                    { 'list': 'ordered'},
+                    { 'list': 'bullet' },
+                    'bold', 'italic', 'underline', 'strike', 'blockquote',
+                    {'color': []},
+                    {'background': []},
+                ],
+                ['code-block', 'link'],
+                ['clean'],
+            ]
+        }
+    }
+}
+
