@@ -38,7 +38,7 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description']
 
     def the_image(self, obj):
-        img = obj.productimage_set.first()
+        img = obj.images.first()
         return format_html('<img src="%s" alt="Foto de Preview" style="width: 150px; height: auto;" />' % img.image.url)
     the_image.short_description = 'Foto'
 

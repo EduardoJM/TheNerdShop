@@ -166,7 +166,7 @@ class Transaction(models.Model):
         item = self.transactionitem_set.all().first()
         if item is None or item.product is None:
             return None
-        images = item.product.productimage_set.all()
+        images = item.product.images.all()
         if len(images) <= 0:
             return None
         return images[0]

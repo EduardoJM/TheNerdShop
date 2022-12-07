@@ -64,19 +64,3 @@ class MaterializeSelectMultiple(MaterializeSelect):
         # An unselected <select multiple> doesn't appear in POST data, so it's
         # never known if the value is actually omitted.
         return False
-
-class MoneyInput(widgets.TextInput):
-    def get_context(self, name, value, attrs):
-        context = super().get_context(name, value, attrs)
-        context['widget']['attrs']['data-mask-money'] = 'on'
-        return context
-
-    def value_from_datadict(self, data, files, name):
-        value = str(super().value_from_datadict(data, files, name))
-        return value.replace(' ', '')
-
-    class Media:
-        js = (
-            'https://unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js',
-            'widgets/common.js',
-        )

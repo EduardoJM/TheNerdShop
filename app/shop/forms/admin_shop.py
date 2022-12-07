@@ -1,6 +1,7 @@
 from django import forms
 from image_uploader_widget import widgets as uploader_widgets
 from .. import widgets as localWidgets
+from widgets.mask_input import MoneyInput
 
 class ProductForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -9,9 +10,8 @@ class ProductForm(forms.ModelForm):
 
     class Meta:
         widgets = {
-            #'description': localWidgets.MarkdownTextArea(),
-            'price': localWidgets.MoneyInput(),
-            'discount_price': localWidgets.MoneyInput(),
+            'price': MoneyInput(),
+            'discount_price': MoneyInput(),
         }
         fields = '__all__'
 

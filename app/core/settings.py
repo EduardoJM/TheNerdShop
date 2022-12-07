@@ -25,6 +25,8 @@ ALLOWED_HOSTS = ['localhost', 'https://sandbox.pagseguro.uol.com.br']
 # Application definition
 
 INSTALLED_APPS = [
+    'admin.materialize',
+
     'shop',
     'payment',
     'django.contrib.admin',
@@ -35,9 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.forms',
     'image_uploader_widget',
-    'channels',
     'crm',
     'sales',
+
+    # Local Common Apps
+    'widgets.mask_input',
 
     # Third Party Apps
     'django_quill',
@@ -77,11 +81,6 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 ASGI_APPLICATION = "core.asgi.application"
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
-    }
-}
 
 DATABASES = {
     "default": {

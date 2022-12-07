@@ -19,7 +19,7 @@ services:
       - thenerdshop
 
   db:
-    image: postgres:9.5.20-alpine
+    image: postgres:11-alpine
     container_name: db
     volumes:
       - thenerdshop_postgres:/var/lib/postgresql/data/

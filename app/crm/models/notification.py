@@ -1,6 +1,5 @@
 from asgiref.sync import async_to_sync
 from django.db import models
-from channels.layers import get_channel_layer
 
 from shop.models import User
 
@@ -28,6 +27,7 @@ class Notification(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
+        """
         if self.notification_type == 'intern':
             channel_layer = get_channel_layer()
             data = {
@@ -50,6 +50,7 @@ class Notification(models.Model):
             )
         else:
             super(Notification, self).save(*args, **kwargs)
+        """
 
     @staticmethod
     def send_intern_to_user(user, title, url, body):
