@@ -19,7 +19,7 @@ Produto oficial e licenciado Marvel
 ### Dimensões
 
 * **Altura**: 10cm
-* **Diâmetro**: 11 cm
+* **Diâmetro**: 11cm
 * **Capacidade**: 350ml
 * **Material**: cerâmica
 
